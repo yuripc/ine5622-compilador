@@ -1,0 +1,54 @@
+programa exemplo;
+ 
+// ex decl constantes 
+inteiro n = 10;  
+caracter car = 'x'; 
+booleano achou = falso; 
+real z = 2.5; 
+cadeia [ 30 ] nome = 'meu nome'; 
+// ex decl variaveis  
+inteiro i,j,k ; 
+inteiro [ 10 ]  x, y; 
+booleano achou; 
+caracter car, kar; 
+cadeia [20] nome; 
+real a,b; 
+caracter [ n ] vet_car; 
+// ex declaracao de metodos 
+metodo maior (ref i:inteiro; val j:real):real  ; 
+{ 
+   x[ i ] := - ( i * j); 
+   se i > j 
+   entao retorne i * x [j] 
+   senao retorne j; 
+}; 
+metodo proc (ref a,b:real;  val c,d:inteiro); 
+{ 
+  c:= maior (d, a * z); 
+  achou := nao (achou e perdeu); 
+}; 
+/* programa principal */ 
+{ 
+leia (x,b,z); 
+enquanto i <= 10 faca  
+{ 
+    se (z > x) e nao achou 
+    entao enquanto b > z faca  
+         { 
+            x:= y + 1; 
+            z:=  0; 
+            cad := 'um literal qquer'; 
+          } 
+    senao enquanto  b ou c faca 
+          { 
+            maior:= maior( i, j+k) > 'm'; 
+            z:=z +  1; 
+            mat [j + 1] := inter - 1; 
+          }; 
+      i:= i+1; 
+  } ;     
+  vet[x+y] := vet[k*l + 1 * vet[1]]; 
+  proc (y[x[1]] , i, j+k, maior ( x[i], x[i+1])); 
+  vetcar['a']:= maior (x,y-1,7); 
+  escreva ('este programa nao faz nada', data[dia],  b); 
+}.
