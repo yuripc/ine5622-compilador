@@ -56,7 +56,7 @@ public class OptionPane extends JOptionPane {
 	// Metodos internos
 	protected static void messageDialog(String mensagem, String titulo, int icone) {
 		JPanel panel = new JPanel();
-		mensagem = "<html>"+mensagem.replace("\n", "<br>")+"</html>";
+		// mensagem = "<html>"+mensagem.replace("\n", "<br>")+"</html>";
 		JLabel lbl = new JLabel(mensagem);
 		panel.add(lbl);
 		showOptionDialog(null, panel, titulo, JOptionPane.NO_OPTION, icone, null, messageDialogOptions, messageDialogOptions[0]);
