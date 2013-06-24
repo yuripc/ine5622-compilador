@@ -128,10 +128,9 @@ public class Principal extends JFrame {
 		mntmLexica.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO
-				System.out.println("Não completo - mntmLexica.addActionListener");
 				try {
 					Analisador.lexico(textArea.getText());
+					OptionPane.messageInformation("Não há problemas léxicos no programa", "Sucesso");
 				} catch (AnalysisError e1) {
 					tratarExcecao(e1);
 				}
@@ -141,10 +140,9 @@ public class Principal extends JFrame {
 		mntmSintatica.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO
-				System.out.println("Não completo - mntmSintatica.addActionListener");
 				try {
 					Analisador.sintatico(textArea.getText());
+					OptionPane.messageInformation("Não há problemas léxicos ou sintáticos no programa", "Sucesso");
 				} catch (AnalysisError e1) {
 					tratarExcecao(e1);
 				}
@@ -155,7 +153,7 @@ public class Principal extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO
-				System.out.println("Não completo - mntmSemantica.addActionListener");
+				System.out.println("Não implementado");
 				try {
 					Analisador.semantico(textArea.getText());
 				} catch (AnalysisError e1) {
@@ -255,7 +253,7 @@ public class Principal extends JFrame {
 			tipo = "semântico";
 		}
 
-		OptionPane.messageError("Há um erro " + tipo + " no programa:" + e.getMessage(), "Erro " + tipo);
+		OptionPane.messageError("Há um erro " + tipo + " no programa: \n" + e.getMessage(), "Erro " + tipo);
 		textArea.setCaretPosition(e.getPosition());
 	}
 }

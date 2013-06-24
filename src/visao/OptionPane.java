@@ -7,6 +7,8 @@ import javax.swing.JPanel;
 public class OptionPane extends JOptionPane {
 	protected static final long serialVersionUID = 1L;
 
+	protected static final String[] messageDialogOptions = { "OK" };
+
 	// Entrada
 	public static String dialogInput(String mensagem) {
 		return dialogInput(mensagem, "");
@@ -49,16 +51,17 @@ public class OptionPane extends JOptionPane {
 	}
 
 	public static void messageError(String mensagem, String titulo) {
+		System.out.println(mensagem);
 		messageDialog(mensagem, titulo, ERROR_MESSAGE);
 	}
 
 	// Metodos internos
 	protected static void messageDialog(String mensagem, String titulo, int icone) {
-		String[] options = { "OK" };
 		JPanel panel = new JPanel();
+		mensagem = "<html>"+mensagem.replace("\n", "<br>")+"</html>";
 		JLabel lbl = new JLabel(mensagem);
 		panel.add(lbl);
-		showOptionDialog(null, panel, titulo, JOptionPane.NO_OPTION, icone, null, options, options[0]);
+		showOptionDialog(null, panel, titulo, JOptionPane.NO_OPTION, icone, null, messageDialogOptions, messageDialogOptions[0]);
 
 	}
 }
