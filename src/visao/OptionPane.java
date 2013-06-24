@@ -5,8 +5,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class OptionPane extends JOptionPane {
-	protected static final long serialVersionUID = 1L;
-
 	protected static final String[] messageDialogOptions = { "OK" };
 
 	// Entrada
