@@ -25,6 +25,11 @@ import controle.analisador.AnalysisError;
 import controle.analisador.LexicalError;
 import controle.analisador.SyntaticError;
 
+/**
+ * @author Fernando Taranto, Yuri Pereira
+ * @since 24/06/2013
+ */
+
 public class Principal extends JFrame {
 	private JPanel contentPane;
 	private JTextArea textArea;
@@ -148,13 +153,13 @@ public class Principal extends JFrame {
 			}
 		});
 
+		mntmSemantica.setEnabled(false); // TODO Remover após implementação da análise sintática
 		mntmSemantica.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO
-				System.out.println("Não implementado");
 				try {
 					Analisador.semantico(textArea.getText());
+					OptionPane.messageInformation("Não há problemas léxicos ou sintáticos no programa", "Sucesso");
 				} catch (AnalysisError e1) {
 					tratarExcecao(e1);
 				}

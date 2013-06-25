@@ -1,5 +1,10 @@
 package controle.analisador;
 
+/**
+ * @author Fernando Taranto, Yuri Pereira
+ * @since 24/06/2013
+ */
+
 public class Lexico implements Constants
 {
 	private int position;
@@ -75,23 +80,8 @@ public class Lexico implements Constants
 
 	private int nextState(char c, int state)
 	{
-		int start = SCANNER_TABLE_INDEXES[state];
-		int end   = SCANNER_TABLE_INDEXES[state+1]-1;
-
-		while (start <= end)
-		{
-			int half = (start+end)/2;
-
-			if (SCANNER_TABLE[half][0] == c) {
-				return SCANNER_TABLE[half][1];
-			} else if (SCANNER_TABLE[half][0] < c) {
-				start = half+1;
-			} else {
-				end = half-1;
-			}
-		}
-
-		return -1;
+		int next = SCANNER_TABLE[state][c];
+		return next;
 	}
 
 	private int tokenForState(int state)

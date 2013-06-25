@@ -8,6 +8,11 @@ import controle.analisador.Sintatico;
 import controle.analisador.SyntaticError;
 import controle.analisador.Token;
 
+/**
+ * @author Fernando Taranto, Yuri Pereira
+ * @since 24/06/2013
+ */
+
 public class Analisador {
 	public static void lexico(String input) throws LexicalError {
 		Lexico lexico = new Lexico(input);
@@ -15,24 +20,23 @@ public class Analisador {
 		Token token;
 		do {
 			token = lexico.nextToken();
-			System.out.println(token);
 		} while (token != null);
 	}
 
 	public static void sintatico(String input) throws LexicalError, SyntaticError, SemanticError {
-		// TODO
-		System.out.println("Não implementado");
-
 		Lexico lexico = new Lexico(input);
 		Sintatico sintatico = new Sintatico();
-		Semantico semantico = new Semantico();
+		Semantico semantico = new Semantico(false);
 
 		sintatico.parse(lexico, semantico);
 	}
 
 	public static void semantico(String input) throws LexicalError, SyntaticError, SemanticError {
-		// TODO
-		System.out.println("Não implementado");
+		Lexico lexico = new Lexico(input);
+		Sintatico sintatico = new Sintatico();
+		Semantico semantico = new Semantico(true);
+
+		sintatico.parse(lexico, semantico);
 	}
 
 }

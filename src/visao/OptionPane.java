@@ -4,6 +4,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+/**
+ * @author Fernando Taranto, Yuri Pereira
+ * @since 24/06/2013
+ */
+
 public class OptionPane extends JOptionPane {
 	protected static final String[] messageDialogOptions = { "OK" };
 

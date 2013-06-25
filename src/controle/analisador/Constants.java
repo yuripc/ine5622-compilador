@@ -1,5 +1,10 @@
 package controle.analisador;
 
+/**
+ * @author Fernando Taranto, Yuri Pereira
+ * @since 24/06/2013
+ */
+
 public interface Constants extends ScannerConstants, ParserConstants
 {
 	int EPSILON  = 0;

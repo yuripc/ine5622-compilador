@@ -1,5 +1,10 @@
 package controle.analisador;
 
+/**
+ * @author Fernando Taranto, Yuri Pereira
+ * @since 24/06/2013
+ */
+
 public class AnalysisError extends Exception
 {
 	private int position;

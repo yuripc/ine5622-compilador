@@ -1,5 +1,10 @@
 package controle.analisador;
 
+/**
+ * @author Fernando Taranto, Yuri Pereira
+ * @since 24/06/2013
+ */
+
 import java.util.Stack;
 
 public class Sintatico implements Constants
