@@ -153,7 +153,7 @@ public class Principal extends JFrame {
 			}
 		});
 
-		mntmSemantica.setEnabled(false); // TODO Remover após implementação da análise sintática
+		mntmSemantica.setEnabled(false); // TODO Remover após implementação da análise semantica
 		mntmSemantica.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
