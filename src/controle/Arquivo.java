@@ -23,7 +23,6 @@ public class Arquivo {
 	protected final JFileChooser fileChooser;
 	protected final String extensao;
 
-
 	public Arquivo() {
 		currentFile = "";
 		extensao = ".txt";
@@ -101,30 +100,37 @@ public class Arquivo {
 	}
 
 	public String abrir() {
+		if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+
+			return abrir(fileChooser.getSelectedFile().getAbsolutePath());
+		} else {
+			return "";
+		}
+	}
+
+	public String abrir(String caminho) {
 		try {
-			if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+			BufferedReader leitor;
 
-				BufferedReader leitor;
+			leitor = new BufferedReader(new FileReader(caminho));
 
-				leitor = new BufferedReader(new FileReader(fileChooser.getSelectedFile()));
+			StringBuilder sb = new StringBuilder();
+			String linha = leitor.readLine();
 
-				StringBuilder sb = new StringBuilder();
-				String linha = leitor.readLine();
-
-				String prefixo = "";
-				while (linha != null) {
-					sb.append(prefixo);
-					sb.append(linha);
-					prefixo = "\n";
-					linha = leitor.readLine();
-				}
-
-				leitor.close();
-
-				currentFile = fileChooser.getSelectedFile().getAbsolutePath();
-
-				return sb.toString();
+			String prefixo = "";
+			while (linha != null) {
+				sb.append(prefixo);
+				sb.append(linha);
+				prefixo = "\n";
+				linha = leitor.readLine();
 			}
+
+			leitor.close();
+
+			currentFile = fileChooser.getSelectedFile().getAbsolutePath();
+
+			return sb.toString();
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

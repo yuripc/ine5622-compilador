@@ -13,29 +13,39 @@ public class TabelaSimbolos {
 		tabela = new Vector<Simbolo>();
 	}
 
-	public void inserir() throws SyntaticError{
+	public void inserir() throws SyntaticError {
 		// TODO
 	}
 
-	public void remover() throws SyntaticError{
+	public void remover() throws SyntaticError {
 		// TODO
 	}
 
-	public void consultar() throws SyntaticError{
+	public void consultar() throws SyntaticError {
 		// TODO
 	}
 
-	public void atualizar() throws SyntaticError{
+	public void atualizar() throws SyntaticError {
 		// TODO
 	}
 
-	protected int getNivelSimbolo(String nome){
-		for(int pos = tabela.size()-1 ; pos>=0 ; pos--){
-			if(tabela.get(pos).getNome().equals(nome)) {
-				return tabela.get(pos).getNivel();
+	protected int getNivelSimbolo(String nome) {
+		Simbolo simbolo = getSimbolo(nome);
+		if (simbolo == null) {
+			return -1;
+		} else {
+			return simbolo.getNivel();
+		}
+	}
+
+	public Simbolo getSimbolo(String nome) {
+		for (int pos = tabela.size() - 1; pos >= 0; pos--) {
+			if (tabela.get(pos).getNome().equals(nome)) {
+				return tabela.get(pos);
 			}
 		}
 
-		return -1;
+		return null;
+
 	}
 }
