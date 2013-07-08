@@ -1,5 +1,10 @@
 package controle.simbolos;
 
+/**
+ * @author Fernando Taranto, Yuri Pereira
+ * @since 24/06/2013
+ */
+
 public class SimboloVariavelVetor extends SimboloVariavel {
 	// TODO
 	protected int tamanho;

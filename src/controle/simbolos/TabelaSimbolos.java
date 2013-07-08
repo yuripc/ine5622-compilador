@@ -4,6 +4,11 @@ import java.util.Vector;
 
 import controle.analisador.SyntaticError;
 
+/**
+ * @author Fernando Taranto, Yuri Pereira
+ * @since 24/06/2013
+ */
+
 public class TabelaSimbolos {
 	protected Vector<Simbolo> tabela;
 

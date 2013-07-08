@@ -7,6 +7,11 @@ package controle.analisador;
 
 import java.util.Stack;
 
+/**
+ * @author Fernando Taranto, Yuri Pereira
+ * @since 24/06/2013
+ */
+
 public class Sintatico implements Constants
 {
 	private Stack<Integer> stack = new Stack<Integer>();

@@ -101,7 +101,6 @@ public class Arquivo {
 
 	public String abrir() {
 		if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-
 			return abrir(fileChooser.getSelectedFile().getAbsolutePath());
 		} else {
 			return "";
@@ -146,5 +145,4 @@ public class Arquivo {
 	public void resetCurrentFile() {
 		currentFile = "";
 	}
-
 }
