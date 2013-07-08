@@ -1,4 +1,4 @@
-package controle;
+package controle.simbolos;
 
 public enum ETipo {
 	CADEIA(false, false, true),

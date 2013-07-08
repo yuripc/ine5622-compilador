@@ -1,6 +1,5 @@
-package controle;
+package controle.simbolos;
 
-import controle.analisador.SyntaticError;
 
 public abstract class Simbolo {
 	protected String nome;
@@ -23,12 +22,8 @@ public abstract class Simbolo {
 		return tipo;
 	}
 
-	public void setTipo(ETipo tipo) throws SyntaticError {
-		if (this.tipo == null) {
-			this.tipo = tipo;
-		} else {
-			throw new SyntaticError("Tipo ja definido");
-		}
+	public void setTipo(ETipo tipo) {
+		this.tipo = tipo;
 	}
 
 	public ECategoria getCategoria() {

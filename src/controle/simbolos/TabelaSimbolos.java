@@ -1,4 +1,4 @@
-package controle;
+package controle.simbolos;
 
 import java.util.Vector;
 

@@ -1,4 +1,4 @@
-package controle;
+package controle.simbolos;
 
 public class SimboloVariavelVetor extends SimboloVariavel {
 	// TODO

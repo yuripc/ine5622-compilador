@@ -1,4 +1,4 @@
-package controle;
+package controle.simbolos;
 
 public class SimboloConstante extends Simbolo {
 	// TODO
