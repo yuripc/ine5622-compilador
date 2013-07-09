@@ -33,4 +33,9 @@ public abstract class Simbolo {
 	public int getNivel() {
 		return nivel;
 	}
+
+	@Override
+	public String toString(){
+		return String.format("Nome: %s | Categoria: %s | Tipo: %s | Nivel: %s", nome, categoria, tipo, nivel);
+	}
 }

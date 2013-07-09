@@ -9,8 +9,9 @@ public class SimboloVarCadeia extends SimboloVar {
 	// TODO
 	protected int tamanho;
 
-	public SimboloVarCadeia(String nome, int nivel, int deslocamento) {
+	public SimboloVarCadeia(String nome, int nivel, int deslocamento, int tamanho) {
 		// TODO
 		super(nome, nivel, deslocamento);
+		this.tamanho = tamanho;
 	}
 }

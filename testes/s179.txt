@@ -1,0 +1,15 @@
+programa exemplo;
+ 
+# constantes 
+inteiro [256] nome;
+
+# variáveis  
+
+
+# métodos 
+
+
+/* MAIN */ 
+{ 
+ 
+}.

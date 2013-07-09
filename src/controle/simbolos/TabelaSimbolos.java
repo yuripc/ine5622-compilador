@@ -2,7 +2,7 @@ package controle.simbolos;
 
 import java.util.Vector;
 
-import controle.analisador.SyntaticError;
+import controle.analisador.SemanticError;
 
 /**
  * @author Fernando Taranto, Yuri Pereira
@@ -18,46 +18,64 @@ public class TabelaSimbolos {
 		tabela = new Vector<Simbolo>();
 	}
 
-	public void inserir(String nome, String categoria, int nivel) throws SyntaticError {
-		// TODO
-		int nivelUltDeclaracao = getNivelSimbolo(nome);
-		if (nivelUltDeclaracao == nivel) {
-			throw new SyntaticError("Id " + nome + " ja declarado");
-		}
-		if (nivelUltDeclaracao == 0) {
-			throw new SyntaticError("Id " + nome + "é usado como identificador do programa, e não pode ser usado em outros lugares");
-		}
-
-	}
-
-	public void remover() throws SyntaticError {
+	public void add(Simbolo simbolo) throws SemanticError {
+		inserirTabela(simbolo);
 		// TODO
 	}
 
-	public void consultar() throws SyntaticError {
+	public void remover() throws SemanticError {
 		// TODO
 	}
 
-	public void atualizar() throws SyntaticError {
+	public Simbolo get(int index) throws SemanticError {
+		return tabela.get(index);
+	}
+
+	public void atualizar() throws SemanticError {
 		// TODO
 	}
 
-	protected int getNivelSimbolo(String nome) {
-		try {
-			return getSimbolo(nome).getNivel();
-		} catch (SyntaticError e) {
-			return -1;
-		}
+	public int size(){
+		return tabela.size();
 	}
 
-	public Simbolo getSimbolo(String nome) throws SyntaticError {
+	public Simbolo getSimbolo(String nome) throws SemanticError {
 		for (int pos = tabela.size() - 1; pos >= 0; pos--) {
 			if (tabela.get(pos).getNome().equals(nome)) {
 				return tabela.get(pos);
 			}
 		}
 
-		throw new SyntaticError("Id " + nome + " não declarado");
+		throw new SemanticError("Id " + nome + " não declarado");
 
+	}
+
+	protected int getNivelSimbolo(String nome) {
+		try {
+			return getSimbolo(nome).getNivel();
+		} catch (SemanticError e) {
+			return -1;
+		}
+	}
+
+	protected void inserirTabela(Simbolo simbolo) throws SemanticError {
+		int nivelUltDeclaracao = getNivelSimbolo(simbolo.getNome());
+		if (nivelUltDeclaracao == simbolo.getNivel()) {
+			throw new SemanticError("Id " + simbolo.getNivel() + " ja declarado");
+		}
+		if (nivelUltDeclaracao == 0) {
+			throw new SemanticError("Id " + simbolo.getNome() + "é usado como identificador do programa, e não pode ser usado em outros lugares");
+		}
+
+		tabela.add(simbolo);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for (Simbolo simbolo : tabela) {
+			sb.append(simbolo);
+		}
+		return sb.toString();
 	}
 }

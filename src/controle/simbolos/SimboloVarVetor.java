@@ -10,8 +10,9 @@ public class SimboloVarVetor extends SimboloVar {
 	protected int tamanho;
 	protected ETipo subTipo;
 
-	public SimboloVarVetor(String nome, int nivel, int deslocamento) {
+	public SimboloVarVetor(String nome, int nivel, int deslocamento, int tamanho) {
 		// TODO
 		super(nome, nivel, deslocamento);
+		this.tamanho = tamanho;
 	}
 }

@@ -1,0 +1,16 @@
+programa exemplo;
+ 
+# constantes 
+inteiro numero = 15;
+real numero2 = 14.1;
+
+# variáveis  
+
+
+# métodos 
+
+
+/* MAIN */ 
+{ 
+ 
+}.

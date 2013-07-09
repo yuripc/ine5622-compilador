@@ -3,6 +3,8 @@ package controle;
 import java.io.File;
 import java.io.FilenameFilter;
 
+import controle.analisador.SemanticError;
+
 /**
  * @author Fernando Taranto, Yuri Pereira
  * @since 24/06/2013
@@ -21,10 +23,7 @@ public class Teste {
 			analisarArquivo(arquivo.getAbsolutePath(), erros);
 		}
 		/* TODO Criar testes
-		 * 109
-		 * 110
 		 * 112
-		 * 113
 		 * 115
 		 * 121
 		 * 122
@@ -55,7 +54,6 @@ public class Teste {
 		 * 172
 		 * 172
 		 * 178
-		 * 179
 		 */
 
 		return erros.toString();
@@ -83,10 +81,12 @@ public class Teste {
 			if (erroEsperado) {
 				erros.append(idChecagem + " - Esperava-se erro \n");
 			}
-		} catch (Exception e) {
+		} catch (SemanticError e) {
 			if (!erroEsperado) {
-				erros.append(idChecagem + " - Erro não esperado - " + e.getMessage() + "\n");
+				erros.append(idChecagem + " - Erro indesejado - " + e.getMessage() + "\n");
 			}
+		} catch (Exception e){
+			erros.append(idChecagem + " - Tipo de erro inesperado - " + e.getMessage() + "\n");
 		}
 	}
 
