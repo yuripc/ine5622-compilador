@@ -5,12 +5,11 @@ package controle.simbolos;
  * @since 24/06/2013
  */
 
-public class SimboloVariavelVetor extends SimboloVariavel {
+public class SimboloVarCadeia extends SimboloVar {
 	// TODO
 	protected int tamanho;
-	protected ETipo subTipo;
 
-	public SimboloVariavelVetor(String nome, int nivel, int deslocamento) {
+	public SimboloVarCadeia(String nome, int nivel, int deslocamento) {
 		// TODO
 		super(nome, nivel, deslocamento);
 	}

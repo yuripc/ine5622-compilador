@@ -5,10 +5,10 @@ package controle.simbolos;
  * @since 24/06/2013
  */
 
-public class SimboloVariavelPredefinido extends SimboloVariavel {
+public class SimboloVarPredefinido extends SimboloVar {
 	// TODO
 
-	public SimboloVariavelPredefinido(String nome, int nivel, int deslocamento) {
+	public SimboloVarPredefinido(String nome, int nivel, int deslocamento) {
 		// TODO
 		super(nome, nivel, deslocamento);
 	}
