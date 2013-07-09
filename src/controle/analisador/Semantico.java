@@ -1,5 +1,7 @@
 package controle.analisador;
 
+import controle.simbolos.TabelaSimbolos;
+
 /**
  * @author Fernando Taranto, Yuri Pereira
  * @since 24/06/2013
@@ -22,8 +24,11 @@ public class Semantico implements Constants {
 	protected boolean opUnario;
 	protected boolean opNega;
 
+	protected TabelaSimbolos ts;
+
 	public Semantico(boolean fazerAnalise) {
 		this.fazerAnalise = fazerAnalise;
+		this.ts = new TabelaSimbolos();
 	}
 
 	public void executeAction(int action, Token token) throws SemanticError {
