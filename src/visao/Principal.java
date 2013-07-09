@@ -21,6 +21,7 @@ import javax.swing.event.DocumentListener;
 
 import controle.Analisador;
 import controle.Arquivo;
+import controle.Teste;
 import controle.analisador.AnalysisError;
 import controle.analisador.LexicalError;
 import controle.analisador.SyntaticError;
@@ -178,6 +179,24 @@ public class Principal extends JFrame {
 		mnAnalise.add(mntmLexica);
 		mnAnalise.add(mntmSintatica);
 		mnAnalise.add(mntmSemantica);
+
+		JMenu mnTestes = new JMenu("Testes");
+		menuBar.add(mnTestes);
+
+		JMenuItem mntmTestes = new JMenuItem("Realizar testes");
+		mntmTestes.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String resultado = Teste.realizarTestes();
+
+				if (resultado.length() == 0) {
+					OptionPane.messageInformation("Testes realizados com sucesso", "Resultado dos testes");
+				} else {
+					OptionPane.messageError("Os seguintes problemas ocorreram durantes os testes: \n" + resultado, "Resultado dos testes");
+				}
+			}
+		});
+		mnTestes.add(mntmTestes);
 
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

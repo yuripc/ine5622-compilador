@@ -126,7 +126,7 @@ public class Arquivo {
 
 			leitor.close();
 
-			currentFile = fileChooser.getSelectedFile().getAbsolutePath();
+			currentFile = caminho;
 
 			return sb.toString();
 

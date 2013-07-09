@@ -1,6 +1,7 @@
 package controle;
 
 import java.io.File;
+import java.io.FilenameFilter;
 
 /**
  * @author Fernando Taranto, Yuri Pereira
@@ -9,100 +10,75 @@ import java.io.File;
 
 public class Teste {
 
-	protected Arquivo arquivo;
-	protected String separador;
+	protected static final Arquivo arquivo = new Arquivo();
 
-	public Teste() {
-		arquivo = new Arquivo();
-		separador = File.separator;
-	}
+	public static String realizarTestes() {
 
-	public String testes() {
 		StringBuilder erros = new StringBuilder();
-		// TODO Sintatico 109
+		File[] arquivos = listFiles();
 
-		// TODO Sintatico 110
-
-		// TODO Sintatico 112
-
-		// TODO Sintatico 113
-
-		// TODO Sintatico 115
-
-		// TODO Sintatico 121
-
-		// TODO Sintatico 122
-
-		// TODO Sintatico 126
-
-		// TODO Sintatico 127
-
-		// TODO Sintatico 129
-
-		// TODO Sintatico 130
-
-		// TODO Sintatico 131
-
-		// TODO Sintatico 132
-
-		// TODO Sintatico 133
-
-		// TODO Sintatico 134
-
-		// TODO Sintatico 135
-
-		// TODO Sintatico 137
-
-		// TODO Sintatico 138
-
-		// TODO Sintatico 139
-
-		// TODO Sintatico 141
-
-		// TODO Sintatico 149
-
-		// TODO Sintatico 150
-
-		// TODO Sintatico 155
-
-		// TODO Sintatico 156
-
-		// TODO Sintatico 161
-
-		// TODO Sintatico 162
-
-		// TODO Sintatico 163
-
-		// TODO Sintatico 164
-
-		// TODO Sintatico 169
-
-		// TODO Sintatico 170
-
-		// TODO Sintatico 171
-
-		// TODO Sintatico 172
-
-		// TODO Sintatico 172
-
-		// TODO Sintatico 178
-
-		// TODO Sintatico 179
+		for (File arquivo : arquivos) {
+			analisarArquivo(arquivo.getAbsolutePath(), erros);
+		}
+		/* TODO Criar testes
+		 * 109
+		 * 110
+		 * 112
+		 * 113
+		 * 115
+		 * 121
+		 * 122
+		 * 126
+		 * 127
+		 * 129
+		 * 130
+		 * 131
+		 * 132
+		 * 133
+		 * 134
+		 * 135
+		 * 137
+		 * 138
+		 * 139
+		 * 141
+		 * 149
+		 * 150
+		 * 155
+		 * 156
+		 * 161
+		 * 162
+		 * 163
+		 * 164
+		 * 169
+		 * 170
+		 * 171
+		 * 172
+		 * 172
+		 * 178
+		 * 179
+		 */
 
 		return erros.toString();
 	}
 
-	protected void analisar(String idChecagem, String caminhoArquivo, StringBuilder erros) {
+	protected static void analisarArquivo(String caminhoArquivo, StringBuilder erros) {
+		String idChecagem;
 		boolean erroEsperado;
 
-		if (Character.toUpperCase(caminhoArquivo.charAt(0)) == 'E') {
+		String nomeArquivo = caminhoArquivo.substring(caminhoArquivo.lastIndexOf("/")+1);
+
+		if (Character.toUpperCase(nomeArquivo.charAt(0)) == 'E') {
 			erroEsperado = true;
 		} else {
 			erroEsperado = false;
 		}
+		idChecagem = nomeArquivo.substring(0, nomeArquivo.lastIndexOf("."));
 
+		System.out.println(caminhoArquivo);
+		System.out.println(arquivo.abrir(caminhoArquivo));
 		try {
-			Analisador.semantico(abrir(caminhoArquivo));
+
+			Analisador.semantico(arquivo.abrir(caminhoArquivo));
 
 			if (erroEsperado) {
 				erros.append(idChecagem + " - Esperava-se erro \n");
@@ -114,8 +90,15 @@ public class Teste {
 		}
 	}
 
-	protected String abrir(String nomeArquivo) {
-		return arquivo.abrir("testes" + separador + nomeArquivo + ".txt");
+	protected static File[] listFiles() {
+		File dir = new File("testes/");
+
+		return dir.listFiles(new FilenameFilter() {
+			@Override
+			public boolean accept(File dir, String filename) {
+				return filename.endsWith(".txt") && !filename.startsWith("_");
+			}
+		});
 	}
 
 }
