@@ -153,13 +153,12 @@ public class Principal extends JFrame {
 			}
 		});
 
-		mntmSemantica.setEnabled(false); // TODO Remover após implementação da análise semantica
 		mntmSemantica.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
 					Analisador.semantico(textArea.getText());
-					OptionPane.messageInformation("Não há problemas léxicos ou sintáticos no programa", "Sucesso");
+					OptionPane.messageInformation("Não há problemas léxicos, sintáticos ou semânticos no programa", "Sucesso");
 				} catch (AnalysisError e1) {
 					tratarExcecao(e1);
 				}

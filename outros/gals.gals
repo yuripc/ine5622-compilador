@@ -111,7 +111,7 @@ div = id: "div"
 <constante>
 <constante_explicita>
 #Grammar
-<programa> ::= programa id  ";"  <bloco> "." ;
+<programa> ::= programa id #101 ";"  <bloco> "." ;
 <bloco> ::= <dcl_var_const> <dcl_metodos> <com_composto> ; 
 <dcl_var_const> ::= <tipo> <dimensao> #102 <lid> #103 <fator_const> #104 ";" <dcl_var_const>
  		| ? ; 

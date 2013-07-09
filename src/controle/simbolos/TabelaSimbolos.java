@@ -18,8 +18,16 @@ public class TabelaSimbolos {
 		tabela = new Vector<Simbolo>();
 	}
 
-	public void inserir() throws SyntaticError {
+	public void inserir(String nome, String categoria, int nivel) throws SyntaticError {
 		// TODO
+		int nivelUltDeclaracao = getNivelSimbolo(nome);
+		if (nivelUltDeclaracao == nivel) {
+			throw new SyntaticError("Id " + nome + " ja declarado");
+		}
+		if (nivelUltDeclaracao == 0) {
+			throw new SyntaticError("Id " + nome + "é usado como identificador do programa, e não pode ser usado em outros lugares");
+		}
+
 	}
 
 	public void remover() throws SyntaticError {
@@ -35,22 +43,21 @@ public class TabelaSimbolos {
 	}
 
 	protected int getNivelSimbolo(String nome) {
-		Simbolo simbolo = getSimbolo(nome);
-		if (simbolo == null) {
+		try {
+			return getSimbolo(nome).getNivel();
+		} catch (SyntaticError e) {
 			return -1;
-		} else {
-			return simbolo.getNivel();
 		}
 	}
 
-	public Simbolo getSimbolo(String nome) {
+	public Simbolo getSimbolo(String nome) throws SyntaticError {
 		for (int pos = tabela.size() - 1; pos >= 0; pos--) {
 			if (tabela.get(pos).getNome().equals(nome)) {
 				return tabela.get(pos);
 			}
 		}
 
-		return null;
+		throw new SyntaticError("Id " + nome + " não declarado");
 
 	}
 }
