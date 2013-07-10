@@ -9,9 +9,9 @@ public class SimboloVarPredefinido extends SimboloVar {
 	// TODO
 	protected String valor;
 
-	public SimboloVarPredefinido(String nome, int nivel, int deslocamento) {
+	public SimboloVarPredefinido(String nome, int nivel, int deslocamento, ETipo tipo) {
 		// TODO
-		super(nome, nivel, deslocamento);
+		super(nome, nivel, deslocamento, tipo);
 	}
 
 	public void toConstante(String valor){

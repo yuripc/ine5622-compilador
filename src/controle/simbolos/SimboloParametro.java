@@ -10,8 +10,8 @@ public class SimboloParametro extends Simbolo {
 	protected int deslocamento;
 	protected boolean referencia;
 
-	public SimboloParametro(String nome, int nivel) {
+	public SimboloParametro(String nome, int nivel, ETipo tipo) {
 		// TODO
-		super(nome, ECategoria.PARAMETRO, nivel);
+		super(nome, ECategoria.PARAMETRO, tipo, nivel);
 	}
 }

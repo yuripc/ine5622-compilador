@@ -7,10 +7,11 @@ public abstract class Simbolo {
 	protected ETipo tipo;
 	protected int nivel;
 
-	protected Simbolo(String nome, ECategoria categoria, int nivel) {
+	protected Simbolo(String nome, ECategoria categoria, ETipo tipo, int nivel) {
 		super();
 		this.nome = nome;
 		this.categoria = categoria;
+		this.tipo = tipo;
 		this.nivel = nivel;
 	}
 

@@ -12,8 +12,8 @@ public class SimboloMetodo extends Simbolo {
 	protected int pontListaParametros;
 	protected ETipo tipoRetorno;
 
-	public SimboloMetodo(String nome, int nivel) {
+	public SimboloMetodo(String nome, int nivel, ETipo tipo) {
 		// TODO
-		super(nome, ECategoria.METODO, nivel);
+		super(nome, ECategoria.METODO, tipo, nivel);
 	}
 }
