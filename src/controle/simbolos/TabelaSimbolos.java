@@ -50,7 +50,7 @@ public class TabelaSimbolos {
 
 	}
 
-	protected int getNivelSimbolo(String nome) {
+	public int getNivelSimbolo(String nome) {
 		try {
 			return getSimbolo(nome).getNivel();
 		} catch (SemanticError e) {
@@ -61,7 +61,7 @@ public class TabelaSimbolos {
 	protected void inserirTabela(Simbolo simbolo) throws SemanticError {
 		int nivelUltDeclaracao = getNivelSimbolo(simbolo.getNome());
 		if (nivelUltDeclaracao == simbolo.getNivel()) {
-			throw new SemanticError("Id " + simbolo.getNivel() + " ja declarado");
+			throw new SemanticError("Id " + simbolo.getNome() + " ja declarado");
 		}
 		if (nivelUltDeclaracao == 0) {
 			throw new SemanticError("Id " + simbolo.getNome() + "é usado como identificador do programa, e não pode ser usado em outros lugares");
@@ -74,7 +74,7 @@ public class TabelaSimbolos {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		for (Simbolo simbolo : tabela) {
-			sb.append(simbolo);
+			sb.append(simbolo).append("\n");
 		}
 		return sb.toString();
 	}

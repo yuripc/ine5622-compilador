@@ -1,0 +1,15 @@
+programa exemplo;
+ 
+# constantes 
+cadeia [0] nome;
+
+# variáveis  
+
+
+# métodos 
+
+
+/* MAIN */ 
+{ 
+ 
+}.

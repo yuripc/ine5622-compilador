@@ -30,7 +30,7 @@ public class Semantico implements Constants {
 
 	protected EMpp mpp;
 
-	protected int priElemLista, ultElemLista, deslocamento;
+	protected int priElemLista, ultElemLista, posid, deslocamento;
 
 	protected boolean opUnario, opNega;
 
@@ -51,6 +51,7 @@ public class Semantico implements Constants {
 				case 101:
 					SimboloPrograma simboloPrograma = new SimboloPrograma(token.getLexeme());
 					ts.add(simboloPrograma);
+					na++;
 					break;
 				case 102:
 					contextoLID = EContextoLID.DECL;
@@ -66,6 +67,16 @@ public class Semantico implements Constants {
 							simbolo.toConstante(valConst);
 						}
 					}
+
+					// Limpeza
+					priElemLista = 0;
+					ultElemLista = 0;
+					categoriaAtual = null;
+					tipoAtual = null;
+					subCategoria = null;
+
+					tipoConst = null;
+					valConst = "";
 					break;
 				case 105:
 					tipoAtual = ETipo.INTEIRO;
@@ -84,6 +95,8 @@ public class Semantico implements Constants {
 						throw new SemanticError("Esperava-se um número inteiro");
 					} else if (Integer.parseInt(valConst) > 256) {
 						throw new SemanticError("Tamanho máximo da cadeia é 256");
+					} else if (Integer.parseInt(valConst) <= 0) {
+						throw new SemanticError("Tamanho da cadeia não pode ser menor ou igual a 0");
 					} else {
 						tipoAtual = ETipo.CADEIA;
 					}
@@ -109,15 +122,25 @@ public class Semantico implements Constants {
 							ts.add(simboloVarVetor);
 							deslocamento += Integer.parseInt(valConst);
 						} else if (subCategoria.isPreDefinido()) {
-							SimboloVarPredefinido simboloVarPredefinido = new SimboloVarPredefinido(token.getLexeme(), na, deslocamento);
+							SimboloVarPredefinido simboloVarPredefinido = new SimboloVarPredefinido(token.getLexeme(), na, deslocamento, tipoAtual);
 							ts.add(simboloVarPredefinido);
 							deslocamento++;
 						} else {
 							throw new SemanticError("Erro ao identificar 'tipoAtual'");
 						}
+					} else if (contextoLID == EContextoLID.PARFORMAL) {
+						if (ts.getNivelSimbolo(token.getLexeme()) == na) {
+							throw new SemanticError("Id de parâmetro repetido");
+						} else {
+							// TODO Semantico 112 - Inserir parametro na TS e aumentar NPF
+						}
+					} else if (contextoLID == EContextoLID.LEITURA) {
+						if (!ts.getSimbolo(token.getLexeme()).getTipo().isLegivel()) {
+							throw new SemanticError("Tipo inválido para leitura");
+						}
+					} else {
+						throw new SemanticError("Erro ao identificar 'contextoLID'");
 					}
-
-					//TODO Semantico 112 par-formal e leitura
 					break;
 				case 113:
 					if (subCategoria.isPreDefinido()) {
@@ -159,9 +182,16 @@ public class Semantico implements Constants {
 				case 125:
 					mpp = EMpp.VALOR;
 					break;
-				case 126: //TODO Semantico 126
+				case 126:
+					posid = ts.getNivelSimbolo(token.getLexeme());
+					if (posid == -1) {
+						throw new SemanticError("Id " + token.getLexeme() + " não declarado");
+					}
 					break;
-				case 127: //TODO Semantico 127
+				case 127:
+					if (!ts.getSimbolo(token.getLexeme()).getTipo().isBooleano()) {
+						throw new SemanticError("Tipo inválido da expressão");
+					}
 					break;
 				case 128:
 					contextoLID = EContextoLID.LEITURA;
