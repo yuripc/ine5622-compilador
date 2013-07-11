@@ -152,6 +152,7 @@ public class Semantico implements Constants {
 					categoriaAtual = ECategoria.VARIAVEL;
 					break;
 				case 115: {
+					contextoLID = EContextoLID.PARFORMAL;
 					IdMetodo simbolo = new IdMetodo(token.getLexeme(), na);
 					ts.add(simbolo);
 					na++;
@@ -167,17 +168,27 @@ public class Semantico implements Constants {
 					simbolo.setTipoRetorno(tipoAtual);
 					break;
 				}
-				case 118: //TODO Semantico 118
+				case 118:
+					contextoLID = null;
 					priElemLista = 0;
 					ultElemLista = 0;
+					tipoMetodo = null;
 					npf = 0;
+					ts.removerNivel(na);
 					na--;
 					break;
-				case 119: //TODO Semantico 119
+				case 119:
+					priElemLista = ts.size();
 					break;
-				case 120: //TODO Semantico 120
+				case 120:
+					ultElemLista = ts.size() - 1;
 					break;
-				case 121: //TODO Semantico 121
+				case 121:
+					if (tipoAtual.isPreDefinido()) {
+						// TODO Verificar forma de armazenamento
+					} else {
+						throw new SemanticError("Par deve ser do tipo pré-definido");
+					}
 					break;
 				case 122:
 					if (!tipoAtual.isPreDefinido()) {
@@ -216,7 +227,14 @@ public class Semantico implements Constants {
 					}
 					break;
 
-				case 130: //TODO Semantico 130
+				case 130:
+					if (contextoLID != EContextoLID.PARFORMAL) {
+						throw new SemanticError("Retorne só pode ser usado em funções");
+					} else if (ts.getLastMetodo().getTipoRetorno() == ETipo.NULO) {
+						throw new SemanticError("Função atual não tem retorno definido");
+					} else if(ts.getLastMetodo().getTipoRetorno() != tipoExpressao) {
+						throw new SemanticError("Tipo da expressão inválido");
+					}
 					break;
 				case 131: //TODO Semantico 131
 					break;

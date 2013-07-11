@@ -23,19 +23,31 @@ public class TabelaSimbolos {
 		// TODO
 	}
 
-	public void remover() throws SemanticError {
-		// TODO
+	public void removerNivel(int nivel) throws SemanticError {
+		// TODO Verificar se vai ficar armazenado
+		while (tabela.size() > 0 && tabela.get(tabela.size() - 1).getNivel() != nivel) {
+			tabela.remove(tabela.size() - 1);
+		}
 	}
 
 	public Id get(int index) throws SemanticError {
 		return tabela.get(index);
 	}
 
+	public IdMetodo getLastMetodo() throws SemanticError {
+		for (int i = tabela.size() - 1; i >= 0; i--) {
+			if (tabela.get(i).getCategoria() == ECategoria.METODO) {
+				return (IdMetodo) tabela.get(i);
+			}
+		}
+		throw new SemanticError("Nenhum método localizado");
+	}
+
 	public void atualizar() throws SemanticError {
 		// TODO
 	}
 
-	public int size(){
+	public int size() {
 		return tabela.size();
 	}
 
