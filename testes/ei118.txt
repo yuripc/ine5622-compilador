@@ -1,0 +1,18 @@
+programa exemplo;
+ 
+# constantes 
+
+
+# variáveis  
+
+
+# métodos 
+metodo metodo1 (ref i:inteiro) : inteiro; 
+{ 
+  
+}; 
+
+/* MAIN */ 
+{ 
+ 
+}.

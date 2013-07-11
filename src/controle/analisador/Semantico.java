@@ -33,7 +33,7 @@ public class Semantico implements Constants {
 
 	protected int priElemLista, ultElemLista, posid, deslocamento, npf;
 
-	protected boolean opUnario, opNega;
+	protected boolean opUnario, opNega, retornoDeclarado;
 
 	protected String valConst;
 
@@ -169,7 +169,11 @@ public class Semantico implements Constants {
 					break;
 				}
 				case 118:
+					if((ts.getLastMetodo().getTipoRetorno() != ETipo.NULO) != retornoDeclarado) {
+						throw new SemanticError("Nenhum retorno declarado no método");
+					}
 					contextoLID = null;
+					retornoDeclarado = false;
 					priElemLista = 0;
 					ultElemLista = 0;
 					tipoMetodo = null;
@@ -192,7 +196,7 @@ public class Semantico implements Constants {
 					break;
 				case 122:
 					if (!tipoAtual.isPreDefinido()) {
-						throw new SemanticError("Métodos devem ser do tipo pré-definido");
+						throw new SemanticError("Retorno dos métodos devem ser do tipo pré-definido");
 					} else {
 						tipoMetodo = tipoAtual;
 					}
@@ -234,6 +238,8 @@ public class Semantico implements Constants {
 						throw new SemanticError("Função atual não tem retorno definido");
 					} else if(ts.getLastMetodo().getTipoRetorno() != tipoExpressao) {
 						throw new SemanticError("Tipo da expressão inválido");
+					} else {
+						retornoDeclarado = true;
 					}
 					break;
 				case 131: //TODO Semantico 131

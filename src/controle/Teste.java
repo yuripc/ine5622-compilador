@@ -24,9 +24,6 @@ public class Teste {
 		}
 		/* TODO Criar testes
 		 * 112
-		 * 115
-		 * 121
-		 * 122
 		 * 126
 		 * 127
 		 * 129
