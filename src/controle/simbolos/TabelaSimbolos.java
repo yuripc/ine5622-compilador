@@ -10,15 +10,15 @@ import controle.analisador.SemanticError;
  */
 
 public class TabelaSimbolos {
-	protected Vector<Simbolo> tabela;
+	protected Vector<Id> tabela;
 
 	// TODO
 
 	public TabelaSimbolos() {
-		tabela = new Vector<Simbolo>();
+		tabela = new Vector<Id>();
 	}
 
-	public void add(Simbolo simbolo) throws SemanticError {
+	public void add(Id simbolo) throws SemanticError {
 		inserirTabela(simbolo);
 		// TODO
 	}
@@ -27,7 +27,7 @@ public class TabelaSimbolos {
 		// TODO
 	}
 
-	public Simbolo get(int index) throws SemanticError {
+	public Id get(int index) throws SemanticError {
 		return tabela.get(index);
 	}
 
@@ -39,7 +39,7 @@ public class TabelaSimbolos {
 		return tabela.size();
 	}
 
-	public Simbolo getSimbolo(String nome) throws SemanticError {
+	public Id getSimbolo(String nome) throws SemanticError {
 		for (int pos = tabela.size() - 1; pos >= 0; pos--) {
 			if (tabela.get(pos).getNome().equals(nome)) {
 				return tabela.get(pos);
@@ -58,7 +58,7 @@ public class TabelaSimbolos {
 		}
 	}
 
-	protected void inserirTabela(Simbolo simbolo) throws SemanticError {
+	protected void inserirTabela(Id simbolo) throws SemanticError {
 		int nivelUltDeclaracao = getNivelSimbolo(simbolo.getNome());
 		if (nivelUltDeclaracao == simbolo.getNivel()) {
 			throw new SemanticError("Id " + simbolo.getNome() + " ja declarado");
@@ -73,7 +73,7 @@ public class TabelaSimbolos {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		for (Simbolo simbolo : tabela) {
+		for (Id simbolo : tabela) {
 			sb.append(simbolo).append("\n");
 		}
 		return sb.toString();

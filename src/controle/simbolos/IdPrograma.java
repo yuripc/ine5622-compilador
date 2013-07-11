@@ -6,9 +6,9 @@ package controle.simbolos;
  * @since 24/06/2013
  */
 
-public class SimboloPrograma extends Simbolo {
+public class IdPrograma extends Id {
 
-	public SimboloPrograma(String nome) {
+	public IdPrograma(String nome) {
 		super(nome, ECategoria.PROGRAMA, ETipo.NULO, 0);
 	}
 }

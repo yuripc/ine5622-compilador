@@ -5,10 +5,11 @@ import controle.simbolos.EContextoEXP;
 import controle.simbolos.EContextoLID;
 import controle.simbolos.EMpp;
 import controle.simbolos.ETipo;
-import controle.simbolos.SimboloPrograma;
-import controle.simbolos.SimboloVarCadeia;
-import controle.simbolos.SimboloVarPredefinido;
-import controle.simbolos.SimboloVarVetor;
+import controle.simbolos.IdMetodo;
+import controle.simbolos.IdPrograma;
+import controle.simbolos.IdVarCadeia;
+import controle.simbolos.IdVarPredefinido;
+import controle.simbolos.IdVarVetor;
 import controle.simbolos.TabelaSimbolos;
 
 /**
@@ -30,7 +31,7 @@ public class Semantico implements Constants {
 
 	protected EMpp mpp;
 
-	protected int priElemLista, ultElemLista, posid, deslocamento;
+	protected int priElemLista, ultElemLista, posid, deslocamento, npf;
 
 	protected boolean opUnario, opNega;
 
@@ -48,11 +49,12 @@ public class Semantico implements Constants {
 			System.out.println("---- Ação #" + action + ", Token: " + token);
 			try {
 				switch (action) {
-				case 101:
-					SimboloPrograma simboloPrograma = new SimboloPrograma(token.getLexeme());
-					ts.add(simboloPrograma);
+				case 101: {
+					IdPrograma simbolo = new IdPrograma(token.getLexeme());
+					ts.add(simbolo);
 					na++;
 					break;
+				}
 				case 102:
 					contextoLID = EContextoLID.DECL;
 					priElemLista = ts.size();
@@ -62,8 +64,9 @@ public class Semantico implements Constants {
 					break;
 				case 104:
 					if (categoriaAtual == ECategoria.CONSTANTE) {
+						IdVarPredefinido simbolo;
 						for (int i = priElemLista; i <= ultElemLista; i++) {
-							SimboloVarPredefinido simbolo = (SimboloVarPredefinido) ts.get(i);
+							simbolo = (IdVarPredefinido) ts.get(i);
 							simbolo.toConstante(valConst);
 						}
 					}
@@ -114,26 +117,22 @@ public class Semantico implements Constants {
 				case 112:
 					if (contextoLID == EContextoLID.DECL) {
 						if (subCategoria == ETipo.CADEIA) {
-							SimboloVarCadeia simboloVarCadeia = new SimboloVarCadeia(token.getLexeme(), na, deslocamento, Integer.parseInt(valConst));
-							ts.add(simboloVarCadeia);
+							IdVarCadeia simbolo = new IdVarCadeia(token.getLexeme(), na, deslocamento, Integer.parseInt(valConst));
+							ts.add(simbolo);
 							deslocamento++;
 						} else if (subCategoria == ETipo.VETOR) {
-							SimboloVarVetor simboloVarVetor = new SimboloVarVetor(token.getLexeme(), na, deslocamento, Integer.parseInt(valConst));
-							ts.add(simboloVarVetor);
+							IdVarVetor simbolo = new IdVarVetor(token.getLexeme(), na, deslocamento, Integer.parseInt(valConst));
+							ts.add(simbolo);
 							deslocamento += Integer.parseInt(valConst);
 						} else if (subCategoria.isPreDefinido()) {
-							SimboloVarPredefinido simboloVarPredefinido = new SimboloVarPredefinido(token.getLexeme(), na, deslocamento, tipoAtual);
-							ts.add(simboloVarPredefinido);
+							IdVarPredefinido simbolo = new IdVarPredefinido(token.getLexeme(), na, deslocamento, tipoAtual);
+							ts.add(simbolo);
 							deslocamento++;
 						} else {
 							throw new SemanticError("Erro ao identificar 'tipoAtual'");
 						}
 					} else if (contextoLID == EContextoLID.PARFORMAL) {
-						if (ts.getNivelSimbolo(token.getLexeme()) == na) {
-							throw new SemanticError("Id de parâmetro repetido");
-						} else {
-							// TODO Semantico 112 - Inserir parametro na TS e aumentar NPF
-						}
+						// TODO Semantico 112 - Inserir parametro na TS e aumentar NPF
 					} else if (contextoLID == EContextoLID.LEITURA) {
 						if (!ts.getSimbolo(token.getLexeme()).getTipo().isLegivel()) {
 							throw new SemanticError("Tipo inválido para leitura");
@@ -152,13 +151,27 @@ public class Semantico implements Constants {
 				case 114:
 					categoriaAtual = ECategoria.VARIAVEL;
 					break;
-				case 115: //TODO Semantico 115
+				case 115: {
+					IdMetodo simbolo = new IdMetodo(token.getLexeme(), na);
+					ts.add(simbolo);
+					na++;
 					break;
-				case 116: //TODO Semantico 116
+				}
+				case 116: {
+					IdMetodo simbolo = (IdMetodo) ts.get(priElemLista - 1);
+					simbolo.setNumParametros(priElemLista - ultElemLista + 1);
 					break;
-				case 117: //TODO Semantico 117
+				}
+				case 117: {
+					IdMetodo simbolo = (IdMetodo) ts.get(priElemLista - 1);
+					simbolo.setTipoRetorno(tipoAtual);
 					break;
+				}
 				case 118: //TODO Semantico 118
+					priElemLista = 0;
+					ultElemLista = 0;
+					npf = 0;
+					na--;
 					break;
 				case 119: //TODO Semantico 119
 					break;
@@ -301,36 +314,7 @@ public class Semantico implements Constants {
 				throw new SemanticError(e.getMessage(), token.getPosition());
 			}
 
-			System.out.println(toString());
-			System.out.println("|||||||||||||||||||||||||||");
 		}
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		System.out.println("Variaveis ---------------------");
-		sb.append("contextoLID: " + contextoLID);
-		sb.append("\n").append("contextoEXPR: " + contextoEXPR);
-		sb.append("\n").append("categoriaAtual: " + categoriaAtual);
-		sb.append("\n").append("subCategoria: " + subCategoria);
-		sb.append("\n").append("tipoAtual: " + tipoAtual);
-		sb.append("\n").append("tipoConst: " + tipoConst);
-		sb.append("\n").append("tipoFator: " + tipoFator);
-		sb.append("\n").append("tipoMetodo: " + tipoMetodo);
-		sb.append("\n").append("tipoExpressao: " + tipoExpressao);
-		sb.append("\n").append("valConst: " + valConst);
-		if (opUnario) {
-			sb.append("\n").append("opUnario: " + opUnario);
-		}
-		if (opNega) {
-			sb.append("\n").append("opNega: " + opNega);
-		}
-
-		sb.append("\n").append("TS ---------------------");
-		sb.append("\n").append(ts.toString());
-		sb.append("FIM TS ---------------------");
-
-		return sb.toString();
-	}
 }

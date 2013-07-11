@@ -5,11 +5,11 @@ package controle.simbolos;
  * @since 24/06/2013
  */
 
-public class SimboloVarPredefinido extends SimboloVar {
+public class IdVarPredefinido extends IdVar {
 	// TODO
 	protected String valor;
 
-	public SimboloVarPredefinido(String nome, int nivel, int deslocamento, ETipo tipo) {
+	public IdVarPredefinido(String nome, int nivel, int deslocamento, ETipo tipo) {
 		// TODO
 		super(nome, nivel, deslocamento, tipo);
 	}

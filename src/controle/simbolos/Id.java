@@ -1,13 +1,13 @@
 package controle.simbolos;
 
 
-public abstract class Simbolo {
+public abstract class Id {
 	protected String nome;
 	protected ECategoria categoria;
 	protected ETipo tipo;
 	protected int nivel;
 
-	protected Simbolo(String nome, ECategoria categoria, ETipo tipo, int nivel) {
+	protected Id(String nome, ECategoria categoria, ETipo tipo, int nivel) {
 		super();
 		this.nome = nome;
 		this.categoria = categoria;

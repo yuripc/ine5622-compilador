@@ -5,12 +5,12 @@ package controle.simbolos;
  * @since 24/06/2013
  */
 
-public class SimboloParametro extends Simbolo {
+public class IdParametro extends Id {
 	// TODO
 	protected int deslocamento;
 	protected boolean referencia;
 
-	public SimboloParametro(String nome, int nivel, ETipo tipo) {
+	public IdParametro(String nome, int nivel, ETipo tipo) {
 		// TODO
 		super(nome, ECategoria.PARAMETRO, tipo, nivel);
 	}
