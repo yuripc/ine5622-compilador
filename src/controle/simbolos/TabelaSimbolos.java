@@ -1,5 +1,6 @@
 package controle.simbolos;
 
+import java.util.Collections;
 import java.util.Vector;
 
 import controle.analisador.SemanticError;
@@ -12,20 +13,16 @@ import controle.analisador.SemanticError;
 public class TabelaSimbolos {
 	protected Vector<Id> tabela;
 
-	// TODO
-
 	public TabelaSimbolos() {
 		tabela = new Vector<Id>();
 	}
 
 	public void add(Id simbolo) throws SemanticError {
 		inserirTabela(simbolo);
-		// TODO
 	}
 
 	public void removerNivel(int nivel) throws SemanticError {
-		// TODO Verificar se vai ficar armazenado
-		while (tabela.size() > 0 && tabela.get(tabela.size() - 1).getNivel() != nivel) {
+		while (tabela.size() > 0 && tabela.get(tabela.size() - 1).getNivel() == nivel) {
 			tabela.remove(tabela.size() - 1);
 		}
 	}
@@ -43,8 +40,26 @@ public class TabelaSimbolos {
 		throw new SemanticError("Nenhum método localizado");
 	}
 
-	public void atualizar() throws SemanticError {
-		// TODO
+	public Vector<IdParametro> getParametros() {
+		Vector<IdParametro> parametros = new Vector<IdParametro>();
+
+		boolean continuarLoop = true;
+
+		for (int i = tabela.size() - 1; i >= 0 && continuarLoop; i--) {
+			if (tabela.get(i).getCategoria() == ECategoria.PARAMETRO) {
+				parametros.add((IdParametro) tabela.get(i));
+			} else {
+				continuarLoop = false;
+			}
+		}
+
+		Collections.reverse(parametros);
+
+		for (int i = 0; i < parametros.size(); i++) {
+			parametros.get(0).setDeslocamento(i);
+		}
+
+		return parametros;
 	}
 
 	public int size() {

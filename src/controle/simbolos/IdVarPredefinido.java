@@ -14,8 +14,17 @@ public class IdVarPredefinido extends IdVar {
 		super(nome, nivel, deslocamento, tipo);
 	}
 
-	public void toConstante(String valor){
+	public void toConstante(String valor) {
 		categoria = ECategoria.CONSTANTE;
 		this.valor = valor;
 	}
+
+	public String getValor() {
+		return valor;
+	}
+
+	public void setValor(String valor) {
+		this.valor = valor;
+	}
+
 }

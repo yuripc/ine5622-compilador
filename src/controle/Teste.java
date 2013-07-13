@@ -69,8 +69,6 @@ public class Teste {
 		}
 		idChecagem = nomeArquivo.substring(0, nomeArquivo.lastIndexOf("."));
 
-		System.out.println(caminhoArquivo);
-		System.out.println(arquivo.abrir(caminhoArquivo));
 		try {
 
 			Analisador.semantico(arquivo.abrir(caminhoArquivo));

@@ -7,7 +7,7 @@ programa exemplo;
 
 
 # métodos 
-metodo metodo1 (ref i:inteiro); 
+metodo metodo1 (ref i:inteiro; val r:real); 
 { 
   
 }; 

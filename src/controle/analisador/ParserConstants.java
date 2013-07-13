@@ -188,7 +188,7 @@ public interface ParserConstants
 			"Era esperado '>='",
 			"Era esperado '{'",
 			"Era esperado '}'",
-			"Era esperado programa ou $",
+			"Era esperado programa $",
 			"Era esperado tipo, 'metodo', '{', ';' ou '.'",
 			"Era esperado tipo, 'metodo' ou '{'",
 			"Era esperado tipo, id, ';', ')' ou '['",

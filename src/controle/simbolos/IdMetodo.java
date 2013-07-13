@@ -1,44 +1,26 @@
 package controle.simbolos;
 
+import java.util.Vector;
+
 /**
  * @author Fernando Taranto, Yuri Pereira
  * @since 24/06/2013
  */
 
 public class IdMetodo extends Id {
-	// TODO
-	protected int endPriInstrucao;
-	protected int numParametros;
-	protected int pontListaParametros;
+	protected Vector<IdParametro> parametros;
 	protected ETipo tipoRetorno;
 
 	public IdMetodo(String nome, int nivel) {
-		// TODO
 		super(nome, ECategoria.METODO, null, nivel);
 	}
 
-	public int getEndPriInstrucao() {
-		return endPriInstrucao;
-	}
-
-	public void setEndPriInstrucao(int endPriInstrucao) {
-		this.endPriInstrucao = endPriInstrucao;
-	}
-
 	public int getNumParametros() {
-		return numParametros;
+		return parametros.size();
 	}
 
-	public void setNumParametros(int numParametros) {
-		this.numParametros = numParametros;
-	}
-
-	public int getPontListaParametros() {
-		return pontListaParametros;
-	}
-
-	public void setPontListaParametros(int pontListaParametros) {
-		this.pontListaParametros = pontListaParametros;
+	public void setParametros(Vector<IdParametro> parametros){
+		this.parametros = parametros;
 	}
 
 	public ETipo getTipoRetorno() {

@@ -6,12 +6,23 @@ package controle.simbolos;
  */
 
 public class IdParametro extends Id {
-	// TODO
 	protected int deslocamento;
-	protected boolean referencia;
+	protected EMpp mpp;
 
-	public IdParametro(String nome, int nivel, ETipo tipo) {
-		// TODO
-		super(nome, ECategoria.PARAMETRO, tipo, nivel);
+	public IdParametro(String nome, int nivel, EMpp mpp) {
+		super(nome, ECategoria.PARAMETRO, ETipo.NULO, nivel);
+		this.mpp = mpp;
+	}
+
+	public int getDeslocamento() {
+		return deslocamento;
+	}
+
+	public void setDeslocamento(int deslocamento) {
+		this.deslocamento = deslocamento;
+	}
+
+	public EMpp getMpp() {
+		return mpp;
 	}
 }

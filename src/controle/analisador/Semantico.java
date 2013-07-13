@@ -5,7 +5,9 @@ import controle.simbolos.EContextoEXP;
 import controle.simbolos.EContextoLID;
 import controle.simbolos.EMpp;
 import controle.simbolos.ETipo;
+import controle.simbolos.Id;
 import controle.simbolos.IdMetodo;
+import controle.simbolos.IdParametro;
 import controle.simbolos.IdPrograma;
 import controle.simbolos.IdVarCadeia;
 import controle.simbolos.IdVarPredefinido;
@@ -27,7 +29,7 @@ public class Semantico implements Constants {
 
 	protected ECategoria categoriaAtual;
 
-	protected ETipo tipoAtual, tipoConst, tipoFator, tipoMetodo, tipoExpressao, subCategoria;
+	protected ETipo tipoAtual, tipoConst, tipoFator, tipoMetodo, tipoExpressao, tipoTermo, tipoVar, subCategoria;
 
 	protected EMpp mpp;
 
@@ -132,7 +134,8 @@ public class Semantico implements Constants {
 							throw new SemanticError("Erro ao identificar 'tipoAtual'");
 						}
 					} else if (contextoLID == EContextoLID.PARFORMAL) {
-						// TODO Semantico 112 - Inserir parametro na TS e aumentar NPF
+						IdParametro simbolo = new IdParametro(token.getLexeme(), na, mpp);
+						ts.add(simbolo);
 					} else if (contextoLID == EContextoLID.LEITURA) {
 						if (!ts.getSimbolo(token.getLexeme()).getTipo().isLegivel()) {
 							throw new SemanticError("Tipo inválido para leitura");
@@ -158,18 +161,16 @@ public class Semantico implements Constants {
 					na++;
 					break;
 				}
-				case 116: {
-					IdMetodo simbolo = (IdMetodo) ts.get(priElemLista - 1);
-					simbolo.setNumParametros(priElemLista - ultElemLista + 1);
+				case 116:
+					ts.getLastMetodo().setParametros(ts.getParametros());
 					break;
-				}
 				case 117: {
-					IdMetodo simbolo = (IdMetodo) ts.get(priElemLista - 1);
-					simbolo.setTipoRetorno(tipoAtual);
+					IdMetodo simbolo = ts.getLastMetodo();
+					simbolo.setTipoRetorno(tipoMetodo);
 					break;
 				}
 				case 118:
-					if((ts.getLastMetodo().getTipoRetorno() != ETipo.NULO) != retornoDeclarado) {
+					if ((ts.getLastMetodo().getTipoRetorno() != ETipo.NULO) != retornoDeclarado) {
 						throw new SemanticError("Nenhum retorno declarado no método");
 					}
 					contextoLID = null;
@@ -177,19 +178,24 @@ public class Semantico implements Constants {
 					priElemLista = 0;
 					ultElemLista = 0;
 					tipoMetodo = null;
-					npf = 0;
 					ts.removerNivel(na);
 					na--;
 					break;
 				case 119:
-					priElemLista = ts.size();
+					contextoLID = EContextoLID.PARFORMAL;
+					if (priElemLista == 0) {
+						priElemLista = ts.size();
+					}
 					break;
 				case 120:
 					ultElemLista = ts.size() - 1;
 					break;
 				case 121:
 					if (tipoAtual.isPreDefinido()) {
-						// TODO Verificar forma de armazenamento
+						for (; ultElemLista >= priElemLista; ultElemLista--) {
+							ts.get(ultElemLista).setTipo(tipoAtual);
+						}
+						priElemLista = ultElemLista = 0;
 					} else {
 						throw new SemanticError("Par deve ser do tipo pré-definido");
 					}
@@ -236,7 +242,7 @@ public class Semantico implements Constants {
 						throw new SemanticError("Retorne só pode ser usado em funções");
 					} else if (ts.getLastMetodo().getTipoRetorno() == ETipo.NULO) {
 						throw new SemanticError("Função atual não tem retorno definido");
-					} else if(ts.getLastMetodo().getTipoRetorno() != tipoExpressao) {
+					} else if (ts.getLastMetodo().getTipoRetorno() != tipoExpressao) {
 						throw new SemanticError("Tipo da expressão inválido");
 					} else {
 						retornoDeclarado = true;
@@ -272,28 +278,56 @@ public class Semantico implements Constants {
 				case 150: //TODO Semantico 150
 					break;
 					// 141 a 153 não existem
-				case 154: //TODO Semantico 154
+				case 154:
+					tipoTermo = tipoFator;
+					tipoFator = null;
 					break;
 				case 155: //TODO Semantico 155
 					break;
 				case 156: //TODO Semantico 156
 					break;
 					// 157 a 160 não existem
-				case 161: //TODO Semantico 161
+				case 161:
+					if (opNega) {
+						throw new SemanticError("Não é permitido dois operadoes 'não' em sequencia");
+					} else {
+						opNega = true;
+					}
 					break;
-				case 162: //TODO Semantico 162
+				case 162:
+					if (tipoFator != ETipo.BOOLEANO) {
+						throw new SemanticError("Não exige operando booleano");
+					}
 					break;
-				case 163: //TODO Semantico 163
+				case 163:
+					if (opUnario) {
+						throw new SemanticError("Não é permitido dois operadoes unários em sequencia");
+					} else {
+						opUnario = true;
+					}
 					break;
-				case 164: //TODO Semantico 164
+				case 164:
+					if (tipoFator != ETipo.INTEIRO || tipoFator != ETipo.REAL) {
+						throw new SemanticError("Não exige operando numérico");
+					}
 					break;
-				case 165: //TODO Semantico 165
+				case 165:
+					opNega = opUnario = false;
 					break;
-				case 166: //TODO Semantico 166
+				case 166:
+					tipoFator = tipoExpressao;
+					tipoExpressao = null;
+					opNega = opUnario = false;
 					break;
-				case 167: //TODO Semantico 167
+				case 167:
+					tipoFator = tipoVar;
+					tipoVar = null;
+					opNega = opUnario = false;
 					break;
-				case 168: //TODO Semantico 168 ERRATAS
+				case 168:
+					tipoFator = tipoConst;
+					tipoConst = null;
+					opNega = opUnario = false;
 					break;
 				case 169: //TODO Semantico 169
 					break;
@@ -303,7 +337,22 @@ public class Semantico implements Constants {
 					break;
 				case 172: //TODO Semantico 172
 					break;
-				case 173: //TODO Semantico 173
+				case 173:
+					Id tempSimbolo;
+					IdVarPredefinido simbolo;
+
+					tempSimbolo = ts.getSimbolo(token.getLexeme());
+					try {
+						simbolo = (IdVarPredefinido) tempSimbolo;
+						if (simbolo.getCategoria() == ECategoria.CONSTANTE) {
+							tipoConst = simbolo.getTipo();
+							valConst = simbolo.getValor();
+						} else {
+							throw new Exception("");
+						}
+					} catch (Exception e) {
+						throw new SemanticError("Esperava-se Id de uma constante");
+					}
 					break;
 				case 174:
 					tipoConst = ETipo.INTEIRO;
@@ -328,17 +377,20 @@ public class Semantico implements Constants {
 				case 179:
 					if (tipoConst != ETipo.INTEIRO) {
 						throw new SemanticError("Esperava-se um número inteiro");
+					} else if (Integer.parseInt(valConst) <= 0) {
+						throw new SemanticError("Tamanho da vetor não pode ser menor ou igual a 0");
 					}
 					break;
-				case 180: //TODO Semantico 180 ERRATAS
+				case 180:
+					if (tipoConst != tipoAtual) {
+						throw new SemanticError("Tipo da constante incorreto");
+					}
 					break;
-
 				}
 			} catch (Exception e) {
+				e.printStackTrace();
 				throw new SemanticError(e.getMessage(), token.getPosition());
 			}
-
 		}
 	}
-
 }
