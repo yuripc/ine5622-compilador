@@ -1,0 +1,18 @@
+programa exemplo;
+ 
+# constantes 
+
+# variáveis  
+inteiro a, b;
+
+# métodos 
+metodo teste (ref i, j :inteiro): inteiro;
+{
+  retorno i;
+};
+/* MAIN */ 
+{ 
+a := teste(a,a);
+
+ 
+}.

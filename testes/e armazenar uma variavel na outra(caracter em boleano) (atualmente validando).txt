@@ -1,0 +1,17 @@
+programa exemplo;
+ 
+# constantes 
+
+# variáveis  
+inteiro a, b;
+caracter c;
+
+booleano bol;
+
+# métodos 
+
+/* MAIN */ 
+{ 
+bol := c;
+ 
+}.

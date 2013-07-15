@@ -1,0 +1,17 @@
+programa exemplo;
+ 
+# constantes 
+
+# variáveis  
+
+
+# métodos 
+metodo teste (ref i :inteiro) : booleano;
+{
+  retorne i;
+};
+
+/* MAIN */ 
+{ 
+ 
+}.

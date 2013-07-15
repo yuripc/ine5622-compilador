@@ -1,0 +1,17 @@
+programa exemplo;
+ 
+# constantes 
+
+# variáveis  
+inteiro a, b;
+
+# métodos 
+
+/* MAIN */ 
+{ 
+  se a > b
+  entao 
+    a := b
+  senao 
+    b:= a;  
+}.

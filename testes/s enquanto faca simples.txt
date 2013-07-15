@@ -1,0 +1,15 @@
+programa exemplo;
+ 
+# constantes 
+
+# variáveis  
+inteiro a, b;
+
+# métodos 
+
+/* MAIN */ 
+{ 
+  enquanto a > b
+  faca 
+     a:=b;
+}.

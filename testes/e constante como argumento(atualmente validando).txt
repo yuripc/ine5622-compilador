@@ -1,0 +1,18 @@
+programa exemplo;
+ 
+# constantes 
+
+# variáveis  
+inteiro a, b;
+booleano bol;
+
+# métodos 
+metodo teste (ref i, j :inteiro);
+{
+
+};
+/* MAIN */ 
+{ 
+teste(a,1);
+ 
+}.
