@@ -23,6 +23,10 @@ public class IdMetodo extends Id {
 		this.parametros = parametros;
 	}
 
+	public ETipo getTipoParametro(int index) {
+		return parametros.get(index).getTipo();
+	}
+
 	public ETipo getTipoRetorno() {
 		return tipoRetorno;
 	}

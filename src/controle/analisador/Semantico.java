@@ -12,6 +12,7 @@ import controle.simbolos.IdPrograma;
 import controle.simbolos.IdVarCadeia;
 import controle.simbolos.IdVarPredefinido;
 import controle.simbolos.IdVarVetor;
+import controle.simbolos.StackExpressao;
 import controle.simbolos.TabelaSimbolos;
 
 /**
@@ -33,17 +34,19 @@ public class Semantico implements Constants {
 
 	protected EMpp mpp;
 
-	protected int priElemLista, ultElemLista, posid, deslocamento, npf;
+	protected int priElemLista, ultElemLista, deslocamento, npf, posId;
 
 	protected boolean opUnario, opNega, retornoDeclarado;
 
 	protected String valConst;
 
 	protected TabelaSimbolos ts;
+	protected StackExpressao pilha;
 
 	public Semantico(boolean fazerAnalise) {
 		this.fazerAnalise = fazerAnalise;
 		this.ts = new TabelaSimbolos();
+		this.pilha = new StackExpressao(ts);
 	}
 
 	public void executeAction(int action, Token token) throws SemanticError {
@@ -167,6 +170,7 @@ public class Semantico implements Constants {
 				case 117: {
 					IdMetodo simbolo = ts.getLastMetodo();
 					simbolo.setTipoRetorno(tipoMetodo);
+					pilha.adicionarNivel();
 					break;
 				}
 				case 118:
@@ -180,6 +184,7 @@ public class Semantico implements Constants {
 					tipoMetodo = null;
 					ts.removerNivel(na);
 					na--;
+					pilha.finalizarNivel();
 					break;
 				case 119:
 					contextoLID = EContextoLID.PARFORMAL;
@@ -217,8 +222,8 @@ public class Semantico implements Constants {
 					mpp = EMpp.VALOR;
 					break;
 				case 126:
-					posid = ts.getNivelSimbolo(token.getLexeme());
-					if (posid == -1) {
+					posId = ts.getNivelSimbolo(token.getLexeme());
+					if (posId == -1) {
 						throw new SemanticError("Id " + token.getLexeme() + " não declarado");
 					}
 					break;
@@ -256,24 +261,54 @@ public class Semantico implements Constants {
 					break;
 				case 134: //TODO Semantico 134
 					break;
-				case 135: //TODO Semantico 135
+				case 135: {
+					Id simboloTemp = ts.getSimbolo(token.getLexeme());
+					if (simboloTemp.getCategoria() == ECategoria.METODO) {
+						IdMetodo simbolo = (IdMetodo) simboloTemp;
+						if (simbolo.getTipoRetorno() == ETipo.NULO) {
+							throw new SemanticError("Esperava-se método com retorno");
+						} else {
+							pilha.adicionarNivel();
+						}
+					} else {
+						throw new SemanticError("Id deveria ser um método");
+					}
 					break;
-				case 136: //TODO Semantico 136
+				}
+				case 136:
+					contextoEXPR = EContextoEXP.PARATUAL;
+					pilha.adicionarExpressao(token);
 					break;
-				case 137: //TODO Semantico 137
+				case 137:
+					pilha.finalizarNivel();
 					break;
 				case 138: //TODO Semantico 138
 					break;
-				case 139: //TODO Semantico 139
+				case 139:
+					if (contextoEXPR == EContextoEXP.IMPRESSAO) {
+						if (tipoExpressao == ETipo.BOOLEANO) {
+							throw new SemanticError("Tipo inválido para impressão");
+						}
+					} else if (contextoEXPR == EContextoEXP.PARATUAL) {
+						pilha.adicionarExpressao(token);
+					}
 					break;
-				case 140: //TODO Semantico 140
+				case 140:
+					if (tipoAtual == null) {
+						pilha.adicionarExpressao(token);
+					} else {
+						pilha.checarTipo(tipoAtual);
+						tipoAtual = null;
+					}
+					tipoExpressao = pilha.getTipo();
 					break;
 				case 141: //TODO Semantico 141
 					break;
 					// 142 a 147 não existem
 				case 148: //TODO Semantico 148
 					break;
-				case 149: //TODO Semantico 149
+				case 149:
+					pilha.checarOperacao(token);
 					break;
 				case 150: //TODO Semantico 150
 					break;
@@ -282,7 +317,8 @@ public class Semantico implements Constants {
 					tipoTermo = tipoFator;
 					tipoFator = null;
 					break;
-				case 155: //TODO Semantico 155
+				case 155:
+					pilha.checarOperacao(token);
 					break;
 				case 156: //TODO Semantico 156
 					break;
@@ -329,15 +365,28 @@ public class Semantico implements Constants {
 					tipoConst = null;
 					opNega = opUnario = false;
 					break;
-				case 169: //TODO Semantico 169
+				case 169: {
+					Id simboloTemp = ts.getSimbolo(token.getLexeme());
+					if (simboloTemp.getCategoria() == ECategoria.METODO) {
+						IdMetodo simbolo = (IdMetodo) simboloTemp;
+						if (simbolo.getTipoRetorno() == ETipo.NULO) {
+							throw new SemanticError("Esperava-se método com retorno");
+						} else {
+							pilha.adicionarExpressao(token);
+							pilha.adicionarNivel();
+						}
+					} else {
+						throw new SemanticError("Id deveria ser um método");
+					}
 					break;
-				case 170: //TODO Semantico 170
+				}
+				case 170: //TODO Semantico 170 Precisa validar o tipo
 					break;
 				case 171: //TODO Semantico 171
 					break;
 				case 172: //TODO Semantico 172
 					break;
-				case 173:
+				case 173: {
 					Id tempSimbolo;
 					IdVarPredefinido simbolo;
 
@@ -354,6 +403,7 @@ public class Semantico implements Constants {
 						throw new SemanticError("Esperava-se Id de uma constante");
 					}
 					break;
+				}
 				case 174:
 					tipoConst = ETipo.INTEIRO;
 					valConst = token.getLexeme();
