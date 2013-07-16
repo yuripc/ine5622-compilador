@@ -157,7 +157,7 @@ div = id: "div"
  		| ? #138 ; 
 <rep_lexpr> ::= "," <expressao> #139 <rep_lexpr>
  		| ? ; 
-<expressao> ::= #201 <expsimp> #140 <resto_expressao> #202 ; 
+<expressao> ::= <expsimp> #140 <resto_expressao> #201 ; 
 <resto_expressao> ::= <oprel> <expsimp> #141
  		| ? ; 
 <oprel> ::= "=" #142
