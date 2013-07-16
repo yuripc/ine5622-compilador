@@ -26,14 +26,19 @@ public class StackExpressao {
 		if (pilha.size() > 0) {
 			if (pilha.peek().isMetodo()) {
 				pilha.peek().adicionar(item.getTipo());
-				return null;
 			}
 		}
 		return item.getTipo();
 	}
 
-	public void adicionarExpressao(Token token) throws SemanticError {
+	public ETipo adicionar(Token token) throws SemanticError {
 		pilha.peek().adicionar(ts.getSimbolo(token.getLexeme()).getTipo());
+		return pilha.peek().getTipo();
+	}
+
+	public ETipo adicionar(ETipo tipo) throws SemanticError {
+		pilha.peek().adicionar(tipo);
+		return tipo;
 	}
 
 	public void checarTipo(ETipo tipo) throws SemanticError {

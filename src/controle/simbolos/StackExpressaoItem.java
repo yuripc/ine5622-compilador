@@ -4,7 +4,8 @@ import controle.analisador.SemanticError;
 
 public class StackExpressaoItem {
 
-	protected ETipo tipo;
+	protected ETipo tipoOperandos;
+	protected ETipo tipoExpressao;
 
 	protected IdMetodo metodo;
 	protected int npa;
@@ -13,17 +14,21 @@ public class StackExpressaoItem {
 	}
 
 	public ETipo getTipo() {
-		return tipo;
+		if (tipoExpressao != null) {
+			return tipoExpressao;
+		} else {
+			return tipoExpressao;
+		}
 	}
 
 	public void adicionar(ETipo tipoSimbolo) throws SemanticError {
 		if (metodo == null) {
-			if (tipo == null) {
-				tipo = tipoSimbolo;
-			} else if (tipo == tipoSimbolo) {
+			if (tipoOperandos == null) {
+				tipoOperandos = tipoSimbolo;
+			} else if (tipoOperandos == tipoSimbolo) {
 				return;
-			} else if ((tipoSimbolo == ETipo.REAL || tipoSimbolo == ETipo.INTEIRO) && (tipo == ETipo.REAL || tipo == ETipo.INTEIRO)) {
-				tipo = ETipo.REAL;
+			} else if ((tipoSimbolo == ETipo.REAL || tipoSimbolo == ETipo.INTEIRO) && (tipoOperandos == ETipo.REAL || tipoOperandos == ETipo.INTEIRO)) {
+				tipoOperandos = ETipo.REAL;
 			} else {
 				throw new SemanticError("Tipo do item diferente do da expressão");
 			}
@@ -44,25 +49,26 @@ public class StackExpressaoItem {
 
 	public void checarOperacao(String lexeme) throws Exception {
 		if (lexeme.equals("+") || lexeme.equals("-") || lexeme.equals("*")) {
-			if (tipo == ETipo.INTEIRO || tipo == ETipo.REAL) {
+			if (tipoOperandos == ETipo.INTEIRO || tipoOperandos == ETipo.REAL) {
 				return;
 			}
 		} else if (lexeme.equals("\\")) {
-			if (tipo == ETipo.INTEIRO) {
-				tipo = ETipo.REAL;
+			if (tipoOperandos == ETipo.INTEIRO) {
+				tipoOperandos = ETipo.REAL;
 				return;
-			} else if (tipo == ETipo.REAL) {
+			} else if (tipoOperandos == ETipo.REAL) {
 				return;
 			}
 		} else if (lexeme.equals("div")) {
-			if (tipo == ETipo.INTEIRO) {
+			if (tipoOperandos == ETipo.INTEIRO) {
 				return;
 			}
 		} else if (lexeme.equals("ou") || lexeme.equals("e")) {
-			if (tipo == ETipo.BOOLEANO) {
+			if (tipoOperandos == ETipo.BOOLEANO) {
 				return;
 			}
 		} else if (lexeme.equals("=") || lexeme.equals("<") || lexeme.equals(">") || lexeme.equals(">=") || lexeme.equals("<=") || lexeme.equals("<>")) {
+			tipoExpressao = ETipo.BOOLEANO;
 		} else {
 			throw new SemanticError("Erro ao identificar lexeme '" + lexeme + "'");
 		}
@@ -74,7 +80,7 @@ public class StackExpressaoItem {
 		if (metodo != null && npa != metodo.getNumParametros()) {
 			throw new SemanticError("Número de parametros abaixo do esperado");
 		}
-		return tipo;
+		return getTipo();
 	}
 
 	public boolean isMetodo() {

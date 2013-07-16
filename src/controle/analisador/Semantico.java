@@ -30,7 +30,7 @@ public class Semantico implements Constants {
 
 	protected ECategoria categoriaAtual;
 
-	protected ETipo tipoAtual, tipoConst, tipoFator, tipoMetodo, tipoExpressao, tipoTermo, tipoVar, subCategoria;
+	protected ETipo tipoAtual, tipoConst, tipoFator, tipoMetodo, tipoExpressao, tipoTermo, tipoVar, subCategoria, tipoLadoEsq;
 
 	protected EMpp mpp;
 
@@ -50,8 +50,8 @@ public class Semantico implements Constants {
 	}
 
 	public void executeAction(int action, Token token) throws SemanticError {
+		System.out.println(action + " - t: " + token.getLexeme());
 		if (fazerAnalise) {
-			System.out.println("---- Ação #" + action + ", Token: " + token);
 			try {
 				switch (action) {
 				case 101: {
@@ -170,7 +170,6 @@ public class Semantico implements Constants {
 				case 117: {
 					IdMetodo simbolo = ts.getLastMetodo();
 					simbolo.setTipoRetorno(tipoMetodo);
-					pilha.adicionarNivel();
 					break;
 				}
 				case 118:
@@ -184,7 +183,6 @@ public class Semantico implements Constants {
 					tipoMetodo = null;
 					ts.removerNivel(na);
 					na--;
-					pilha.finalizarNivel();
 					break;
 				case 119:
 					contextoLID = EContextoLID.PARFORMAL;
@@ -222,13 +220,14 @@ public class Semantico implements Constants {
 					mpp = EMpp.VALOR;
 					break;
 				case 126:
-					posId = ts.getNivelSimbolo(token.getLexeme());
+					posId = ts.getPos(token.getLexeme());
 					if (posId == -1) {
 						throw new SemanticError("Id " + token.getLexeme() + " não declarado");
 					}
 					break;
 				case 127:
-					if (!ts.getSimbolo(token.getLexeme()).getTipo().isBooleano()) {
+					tipoExpressao = pilha.finalizarNivel();
+					if (tipoExpressao.isBooleano()) {
 						throw new SemanticError("Tipo inválido da expressão");
 					}
 					break;
@@ -237,12 +236,14 @@ public class Semantico implements Constants {
 					break;
 				case 129:
 					contextoEXPR = EContextoEXP.IMPRESSAO;
+					tipoExpressao = pilha.finalizarNivel();
 					if (tipoExpressao == ETipo.BOOLEANO) {
 						throw new SemanticError("Booleano não pode ser usado para impressão");
 					}
 					break;
 
 				case 130:
+					tipoExpressao = pilha.finalizarNivel();
 					if (contextoLID != EContextoLID.PARFORMAL) {
 						throw new SemanticError("Retorne só pode ser usado em funções");
 					} else if (ts.getLastMetodo().getTipoRetorno() == ETipo.NULO) {
@@ -253,9 +254,24 @@ public class Semantico implements Constants {
 						retornoDeclarado = true;
 					}
 					break;
-				case 131: //TODO Semantico 131
+				case 131: {
+					Id simbolo = ts.getSimbolo(token.getLexeme());
+					if (simbolo.getCategoria() == ECategoria.VARIAVEL || simbolo.getCategoria() == ECategoria.PARAMETRO) {
+						if (simbolo.getTipo() == ETipo.VETOR) {
+							throw new SemanticError("Tipo deveria ser indexado");
+						} else {
+							tipoLadoEsq = simbolo.getTipo();
+						}
+					} else {
+						throw new SemanticError("Id deveria ser variável ou parametro");
+					}
 					break;
-				case 132: //TODO Semantico 132
+				}
+				case 132:
+					tipoExpressao = pilha.finalizarNivel();
+					if (!(tipoLadoEsq == tipoExpressao || (tipoLadoEsq == ETipo.REAL && tipoExpressao == ETipo.INTEIRO) || (tipoLadoEsq == ETipo.CADEIA && tipoExpressao == ETipo.CARACTERE))) {
+						throw new SemanticError("Tipos incompativeis");
+					}
 					break;
 				case 133: //TODO Semantico 133
 					break;
@@ -276,8 +292,8 @@ public class Semantico implements Constants {
 					break;
 				}
 				case 136:
+					// TODO Checar como fazer metodo
 					contextoEXPR = EContextoEXP.PARATUAL;
-					pilha.adicionarExpressao(token);
 					break;
 				case 137:
 					pilha.finalizarNivel();
@@ -290,37 +306,36 @@ public class Semantico implements Constants {
 							throw new SemanticError("Tipo inválido para impressão");
 						}
 					} else if (contextoEXPR == EContextoEXP.PARATUAL) {
-						pilha.adicionarExpressao(token);
+
+						// TODO Checar como fazer
+						// pilha.adicionarExpressao(token);
 					}
 					break;
-				case 140:
-					if (tipoAtual == null) {
-						pilha.adicionarExpressao(token);
-					} else {
-						pilha.checarTipo(tipoAtual);
-						tipoAtual = null;
-					}
-					tipoExpressao = pilha.getTipo();
+
+					// 140 e 141 não usado
+				case 142:
+				case 143:
+				case 144:
+				case 145:
+				case 146:
+				case 147:
+					pilha.checarOperacao(token);
 					break;
-				case 141: //TODO Semantico 141
-					break;
-					// 142 a 147 não existem
-				case 148: //TODO Semantico 148
-					break;
+					// 148 não usado - inserido em <termo>
 				case 149:
 					pilha.checarOperacao(token);
 					break;
-				case 150: //TODO Semantico 150
-					break;
-					// 141 a 153 não existem
+					// 150 não usado - inserido em <termo>
+					// 151 a 153 não usados
 				case 154:
-					tipoTermo = tipoFator;
+					pilha.adicionar(tipoFator);
 					tipoFator = null;
 					break;
 				case 155:
 					pilha.checarOperacao(token);
 					break;
-				case 156: //TODO Semantico 156
+				case 156:
+					pilha.adicionar(tipoFator);
 					break;
 					// 157 a 160 não existem
 				case 161:
@@ -334,6 +349,7 @@ public class Semantico implements Constants {
 					if (tipoFator != ETipo.BOOLEANO) {
 						throw new SemanticError("Não exige operando booleano");
 					}
+					pilha.adicionarNivel();
 					break;
 				case 163:
 					if (opUnario) {
@@ -346,33 +362,38 @@ public class Semantico implements Constants {
 					if (tipoFator != ETipo.INTEIRO || tipoFator != ETipo.REAL) {
 						throw new SemanticError("Não exige operando numérico");
 					}
+					pilha.adicionarNivel();
 					break;
 				case 165:
 					opNega = opUnario = false;
+					pilha.adicionarNivel();
+					pilha.adicionarNivel();
 					break;
 				case 166:
+					tipoExpressao = pilha.finalizarNivel();
 					tipoFator = tipoExpressao;
 					tipoExpressao = null;
 					opNega = opUnario = false;
 					break;
 				case 167:
+					pilha.adicionarNivel();
 					tipoFator = tipoVar;
 					tipoVar = null;
 					opNega = opUnario = false;
 					break;
 				case 168:
+					pilha.adicionarNivel();
 					tipoFator = tipoConst;
 					tipoConst = null;
 					opNega = opUnario = false;
 					break;
 				case 169: {
-					Id simboloTemp = ts.getSimbolo(token.getLexeme());
+					Id simboloTemp = ts.get(posId);
 					if (simboloTemp.getCategoria() == ECategoria.METODO) {
 						IdMetodo simbolo = (IdMetodo) simboloTemp;
 						if (simbolo.getTipoRetorno() == ETipo.NULO) {
 							throw new SemanticError("Esperava-se método com retorno");
 						} else {
-							pilha.adicionarExpressao(token);
 							pilha.adicionarNivel();
 						}
 					} else {
@@ -439,7 +460,11 @@ public class Semantico implements Constants {
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
-				throw new SemanticError(e.getMessage(), token.getPosition());
+				if (e.getMessage() == null) {
+					throw new SemanticError(e.toString(), token.getPosition());
+				} else {
+					throw new SemanticError(e.getMessage(), token.getPosition());
+				}
 			}
 		}
 	}

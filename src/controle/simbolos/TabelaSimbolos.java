@@ -85,6 +85,17 @@ public class TabelaSimbolos {
 		}
 	}
 
+	public int getPos(String nome) throws SemanticError {
+		for (int pos = tabela.size() - 1; pos >= 0; pos--) {
+			if (tabela.get(pos).getNome().equals(nome)) {
+				return pos;
+			}
+		}
+
+		return -1;
+
+	}
+
 	protected void inserirTabela(Id simbolo) throws SemanticError {
 		int nivelUltDeclaracao = getNivelSimbolo(simbolo.getNome());
 		if (nivelUltDeclaracao == simbolo.getNivel()) {
