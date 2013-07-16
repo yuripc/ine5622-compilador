@@ -16,33 +16,21 @@ public class StackExpressao {
 	}
 
 	public void adicionarNivel() throws SemanticError {
-		StackExpressaoItem item = new StackExpressaoItem();
-		pilha.add(item);
+		pilha.add(new StackExpressaoItem());
 	}
 
 	public ETipo finalizarNivel() throws SemanticError {
-		StackExpressaoItem item = pilha.pop();
-		item.finalizar();
-		if (pilha.size() > 0) {
-			if (pilha.peek().isMetodo()) {
-				pilha.peek().adicionar(item.getTipo());
-			}
-		}
-		return item.getTipo();
+		return pilha.pop().getTipo();
 	}
 
 	public ETipo adicionar(Token token) throws SemanticError {
-		pilha.peek().adicionar(ts.getSimbolo(token.getLexeme()).getTipo());
+		pilha.peek().adicionar(ts.get(token).getTipo());
 		return pilha.peek().getTipo();
 	}
 
 	public ETipo adicionar(ETipo tipo) throws SemanticError {
 		pilha.peek().adicionar(tipo);
 		return tipo;
-	}
-
-	public void checarTipo(ETipo tipo) throws SemanticError {
-		pilha.peek().adicionar(tipo);
 	}
 
 	public void checarOperacao(Token token) throws Exception {

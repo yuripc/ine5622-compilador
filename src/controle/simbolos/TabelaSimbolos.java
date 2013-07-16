@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Vector;
 
 import controle.analisador.SemanticError;
+import controle.analisador.Token;
 
 /**
  * @author Fernando Taranto, Yuri Pereira
@@ -66,7 +67,7 @@ public class TabelaSimbolos {
 		return tabela.size();
 	}
 
-	public Id getSimbolo(String nome) throws SemanticError {
+	public Id get(String nome) throws SemanticError {
 		for (int pos = tabela.size() - 1; pos >= 0; pos--) {
 			if (tabela.get(pos).getNome().equals(nome)) {
 				return tabela.get(pos);
@@ -74,12 +75,15 @@ public class TabelaSimbolos {
 		}
 
 		throw new SemanticError("Id " + nome + " não declarado");
+	}
 
+	public Id get(Token token) throws SemanticError {
+		return get(token.getLexeme());
 	}
 
 	public int getNivelSimbolo(String nome) {
 		try {
-			return getSimbolo(nome).getNivel();
+			return get(nome).getNivel();
 		} catch (SemanticError e) {
 			return -1;
 		}

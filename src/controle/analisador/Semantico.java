@@ -41,12 +41,12 @@ public class Semantico implements Constants {
 	protected String valConst;
 
 	protected TabelaSimbolos ts;
-	protected StackExpressao pilha;
+	protected StackExpressao pilhaExpressao;
 
 	public Semantico(boolean fazerAnalise) {
 		this.fazerAnalise = fazerAnalise;
 		this.ts = new TabelaSimbolos();
-		this.pilha = new StackExpressao(ts);
+		this.pilhaExpressao = new StackExpressao(ts);
 	}
 
 	public void executeAction(int action, Token token) throws SemanticError {
@@ -140,7 +140,7 @@ public class Semantico implements Constants {
 						IdParametro simbolo = new IdParametro(token.getLexeme(), na, mpp);
 						ts.add(simbolo);
 					} else if (contextoLID == EContextoLID.LEITURA) {
-						if (!ts.getSimbolo(token.getLexeme()).getTipo().isLegivel()) {
+						if (!ts.get(token).getTipo().isLegivel()) {
 							throw new SemanticError("Tipo inválido para leitura");
 						}
 					} else {
@@ -226,7 +226,7 @@ public class Semantico implements Constants {
 					}
 					break;
 				case 127:
-					tipoExpressao = pilha.finalizarNivel();
+					tipoExpressao = pilhaExpressao.finalizarNivel();
 					if (tipoExpressao.isBooleano()) {
 						throw new SemanticError("Tipo inválido da expressão");
 					}
@@ -236,14 +236,14 @@ public class Semantico implements Constants {
 					break;
 				case 129:
 					contextoEXPR = EContextoEXP.IMPRESSAO;
-					tipoExpressao = pilha.finalizarNivel();
+					tipoExpressao = pilhaExpressao.finalizarNivel();
 					if (tipoExpressao == ETipo.BOOLEANO) {
 						throw new SemanticError("Booleano não pode ser usado para impressão");
 					}
 					break;
 
 				case 130:
-					tipoExpressao = pilha.finalizarNivel();
+					tipoExpressao = pilhaExpressao.finalizarNivel();
 					if (contextoLID != EContextoLID.PARFORMAL) {
 						throw new SemanticError("Retorne só pode ser usado em funções");
 					} else if (ts.getLastMetodo().getTipoRetorno() == ETipo.NULO) {
@@ -255,7 +255,7 @@ public class Semantico implements Constants {
 					}
 					break;
 				case 131: {
-					Id simbolo = ts.getSimbolo(token.getLexeme());
+					Id simbolo = ts.get(token);
 					if (simbolo.getCategoria() == ECategoria.VARIAVEL || simbolo.getCategoria() == ECategoria.PARAMETRO) {
 						if (simbolo.getTipo() == ETipo.VETOR) {
 							throw new SemanticError("Tipo deveria ser indexado");
@@ -268,7 +268,7 @@ public class Semantico implements Constants {
 					break;
 				}
 				case 132:
-					tipoExpressao = pilha.finalizarNivel();
+					tipoExpressao = pilhaExpressao.finalizarNivel();
 					if (!(tipoLadoEsq == tipoExpressao || (tipoLadoEsq == ETipo.REAL && tipoExpressao == ETipo.INTEIRO) || (tipoLadoEsq == ETipo.CADEIA && tipoExpressao == ETipo.CARACTERE))) {
 						throw new SemanticError("Tipos incompativeis");
 					}
@@ -278,13 +278,13 @@ public class Semantico implements Constants {
 				case 134: //TODO Semantico 134
 					break;
 				case 135: {
-					Id simboloTemp = ts.getSimbolo(token.getLexeme());
+					Id simboloTemp = ts.get(token);
 					if (simboloTemp.getCategoria() == ECategoria.METODO) {
 						IdMetodo simbolo = (IdMetodo) simboloTemp;
 						if (simbolo.getTipoRetorno() == ETipo.NULO) {
 							throw new SemanticError("Esperava-se método com retorno");
 						} else {
-							pilha.adicionarNivel();
+							pilhaExpressao.adicionarNivel();
 						}
 					} else {
 						throw new SemanticError("Id deveria ser um método");
@@ -296,7 +296,7 @@ public class Semantico implements Constants {
 					contextoEXPR = EContextoEXP.PARATUAL;
 					break;
 				case 137:
-					pilha.finalizarNivel();
+					pilhaExpressao.finalizarNivel();
 					break;
 				case 138: //TODO Semantico 138
 					break;
@@ -319,23 +319,23 @@ public class Semantico implements Constants {
 				case 145:
 				case 146:
 				case 147:
-					pilha.checarOperacao(token);
+					pilhaExpressao.checarOperacao(token);
 					break;
 					// 148 não usado - inserido em <termo>
 				case 149:
-					pilha.checarOperacao(token);
+					pilhaExpressao.checarOperacao(token);
 					break;
 					// 150 não usado - inserido em <termo>
 					// 151 a 153 não usados
 				case 154:
-					pilha.adicionar(tipoFator);
+					pilhaExpressao.adicionar(tipoFator);
 					tipoFator = null;
 					break;
 				case 155:
-					pilha.checarOperacao(token);
+					pilhaExpressao.checarOperacao(token);
 					break;
 				case 156:
-					pilha.adicionar(tipoFator);
+					pilhaExpressao.adicionar(tipoFator);
 					break;
 					// 157 a 160 não existem
 				case 161:
@@ -349,7 +349,7 @@ public class Semantico implements Constants {
 					if (tipoFator != ETipo.BOOLEANO) {
 						throw new SemanticError("Não exige operando booleano");
 					}
-					pilha.adicionarNivel();
+					pilhaExpressao.adicionarNivel();
 					break;
 				case 163:
 					if (opUnario) {
@@ -362,27 +362,27 @@ public class Semantico implements Constants {
 					if (tipoFator != ETipo.INTEIRO || tipoFator != ETipo.REAL) {
 						throw new SemanticError("Não exige operando numérico");
 					}
-					pilha.adicionarNivel();
+					pilhaExpressao.adicionarNivel();
 					break;
 				case 165:
 					opNega = opUnario = false;
-					pilha.adicionarNivel();
-					pilha.adicionarNivel();
+					pilhaExpressao.adicionarNivel();
+					pilhaExpressao.adicionarNivel();
 					break;
 				case 166:
-					tipoExpressao = pilha.finalizarNivel();
+					tipoExpressao = pilhaExpressao.finalizarNivel();
 					tipoFator = tipoExpressao;
 					tipoExpressao = null;
 					opNega = opUnario = false;
 					break;
 				case 167:
-					pilha.adicionarNivel();
+					pilhaExpressao.adicionarNivel();
 					tipoFator = tipoVar;
 					tipoVar = null;
 					opNega = opUnario = false;
 					break;
 				case 168:
-					pilha.adicionarNivel();
+					pilhaExpressao.adicionarNivel();
 					tipoFator = tipoConst;
 					tipoConst = null;
 					opNega = opUnario = false;
@@ -394,7 +394,7 @@ public class Semantico implements Constants {
 						if (simbolo.getTipoRetorno() == ETipo.NULO) {
 							throw new SemanticError("Esperava-se método com retorno");
 						} else {
-							pilha.adicionarNivel();
+							pilhaExpressao.adicionarNivel();
 						}
 					} else {
 						throw new SemanticError("Id deveria ser um método");
@@ -405,13 +405,35 @@ public class Semantico implements Constants {
 					break;
 				case 171: //TODO Semantico 171
 					break;
-				case 172: //TODO Semantico 172
+				case 172: {
+					Id simbolo = ts.get(token);
+					if (simbolo.getCategoria() == ECategoria.VARIAVEL || simbolo.getCategoria() == ECategoria.PARAMETRO) {
+						if (simbolo.getTipo() == ETipo.VETOR) {
+							throw new SemanticError("Vetor deve ser indexado");
+						} else {
+							tipoVar = simbolo.getTipo();
+						}
+					} else if (simbolo.getCategoria() == ECategoria.METODO) {
+						IdMetodo simboloMetodo = (IdMetodo) simbolo;
+						if (simboloMetodo.getTipoRetorno() == ETipo.NULO) {
+							throw new SemanticError("Esperava-se método com retorno");
+						} else if (simboloMetodo.getNumParametros() > 0) {
+							throw new SemanticError("Erro na quantidade de parametros");
+						} else {
+							tipoVar = simboloMetodo.getTipoRetorno();
+						}
+					} else if (simbolo.getCategoria() == ECategoria.CONSTANTE) {
+						tipoVar = simbolo.getTipo();
+					} else {
+						throw new SemanticError("Esperava-se variável, constante ou método");
+					}
 					break;
+				}
 				case 173: {
 					Id tempSimbolo;
 					IdVarPredefinido simbolo;
 
-					tempSimbolo = ts.getSimbolo(token.getLexeme());
+					tempSimbolo = ts.get(token);
 					try {
 						simbolo = (IdVarPredefinido) tempSimbolo;
 						if (simbolo.getCategoria() == ECategoria.CONSTANTE) {
