@@ -1,0 +1,16 @@
+programa exemplo;
+ 
+# constantes 
+inteiro m = 1;
+
+# variáveis  
+inteiro i,j,k;
+inteiro [5] a;
+
+# métodos 
+
+
+/* MAIN */ 
+{ 
+ a[i] := 1;
+}.

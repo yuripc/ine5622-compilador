@@ -1,0 +1,15 @@
+programa exemplo;
+ 
+# constantes 
+inteiro m = 1;
+
+# variáveis  
+inteiro i,j,k;
+
+# métodos 
+
+
+/* MAIN */ 
+{ 
+ i := i+m;
+}.
