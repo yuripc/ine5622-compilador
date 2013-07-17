@@ -1,0 +1,15 @@
+programa exemplo;
+ 
+# constantes 
+
+
+# variáveis  
+
+
+# métodos 
+
+
+/* MAIN */ 
+{ 
+ escreva(1>0);
+}.

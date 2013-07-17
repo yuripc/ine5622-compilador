@@ -313,7 +313,7 @@ public class Semantico implements Constants {
 				}
 				case 136:
 					contextoEXPR = EContextoEXP.PARATUAL;
-					pilhaMetodo.adicionarParametro(mpp, tipoExpressao);
+					pilhaMetodo.adicionar(mpp, tipoExpressao);
 					break;
 				case 137:
 					pilhaMetodo.finalizarFuncao();
@@ -340,7 +340,7 @@ public class Semantico implements Constants {
 							throw new SemanticError("Tipo inválido para impressão");
 						}
 					} else if (contextoEXPR == EContextoEXP.PARATUAL) {
-						pilhaMetodo.adicionarParametro(mpp, tipoExpressao);
+						pilhaMetodo.adicionar(mpp, tipoExpressao);
 					}
 					break;
 

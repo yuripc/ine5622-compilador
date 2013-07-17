@@ -23,11 +23,6 @@ public class Teste {
 			analisarArquivo(arquivo.getAbsolutePath(), erros);
 		}
 		/* TODO Criar testes
-		 * 112
-		 * 126
-		 * 127
-		 * 129
-		 * 130
 		 * 131
 		 * 132
 		 * 133
@@ -50,7 +45,7 @@ public class Teste {
 		 * 171
 		 * 172
 		 * 172
-		 * 178
+		 * 180
 		 */
 
 		return erros.toString();
