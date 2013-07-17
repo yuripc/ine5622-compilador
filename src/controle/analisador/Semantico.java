@@ -1,5 +1,7 @@
 package controle.analisador;
 
+import java.util.Stack;
+
 import controle.simbolos.ECategoria;
 import controle.simbolos.EContextoEXP;
 import controle.simbolos.EContextoLID;
@@ -35,7 +37,8 @@ public class Semantico implements Constants {
 
 	protected EMpp mpp;
 
-	protected int priElemLista, ultElemLista, deslocamento, npf, posId;
+	protected int priElemLista, ultElemLista, deslocamento, npf;
+	protected Stack<Integer> posId;
 
 	protected boolean opUnario, opNega, retornoDeclarado;
 
@@ -50,6 +53,7 @@ public class Semantico implements Constants {
 		this.ts = new TabelaSimbolos();
 		this.pilhaExpressao = new StackExpressao(ts);
 		this.pilhaMetodo = new StackMetodo();
+		this.posId = new Stack<Integer>();
 	}
 
 	public void executeAction(int action, Token token) throws SemanticError {
@@ -223,13 +227,13 @@ public class Semantico implements Constants {
 					mpp = EMpp.VALOR;
 					break;
 				case 126:
-					posId = ts.getPos(token.getLexeme());
-					if (posId == -1) {
+					posId.push(ts.getPos(token.getLexeme()));
+					if (posId.peek() == -1) {
 						throw new SemanticError("Id " + token.getLexeme() + " não declarado");
 					}
 					break;
 				case 127:
-					if (tipoExpressao.isBooleano()) {
+					if (!tipoExpressao.isBooleano()) {
 						throw new SemanticError("Tipo inválido da expressão");
 					}
 					break;
@@ -273,14 +277,15 @@ public class Semantico implements Constants {
 					}
 					break;
 				case 133: {
-					Id simbolo = ts.get(posId);
+					Id simbolo = ts.get(posId.peek());
 					if (simbolo.getCategoria() != ECategoria.VARIAVEL) {
 						throw new SemanticError("Esperava-se uma variável");
-					} else if (simbolo.getTipo() != ETipo.VETOR || simbolo.getTipo() != ETipo.CADEIA) {
+					} else if (simbolo.getTipo() != ETipo.VETOR && simbolo.getTipo() != ETipo.CADEIA) {
 						throw new SemanticError("Apenas vetores e cadeias podem ser indexados");
 					} else {
 						tipoVarIndexada = simbolo.getTipo();
 					}
+					break;
 				}
 				case 134:
 					if (tipoExpressao != ETipo.INTEIRO) {
@@ -288,16 +293,16 @@ public class Semantico implements Constants {
 					} else if (tipoVarIndexada == ETipo.CADEIA) {
 						tipoLadoEsq = ETipo.CARACTERE;
 					} else {
-						IdVarVetor simbolo = (IdVarVetor) ts.get(posId);
+						IdVarVetor simbolo = (IdVarVetor) ts.get(posId.pop());
 						tipoLadoEsq = simbolo.getSubTipo();
 					}
 					break;
 				case 135: {
-					Id simboloTemp = ts.get(token);
+					Id simboloTemp = ts.get(posId.peek());
 					if (simboloTemp.getCategoria() == ECategoria.METODO) {
 						IdMetodo simbolo = (IdMetodo) simboloTemp;
-						if (simbolo.getTipoRetorno() == ETipo.NULO) {
-							throw new SemanticError("Esperava-se método com retorno");
+						if (simbolo.getTipoRetorno() != ETipo.NULO) {
+							throw new SemanticError("Esperava-se método sem retorno");
 						} else {
 							pilhaMetodo.adicionarFuncao(simbolo);
 						}
@@ -312,6 +317,7 @@ public class Semantico implements Constants {
 					break;
 				case 137:
 					pilhaMetodo.finalizarFuncao();
+					posId.pop();
 					break;
 				case 138: {
 					Id simbolo = ts.get(token);
@@ -406,11 +412,13 @@ public class Semantico implements Constants {
 					opNega = opUnario = false;
 					break;
 				case 169: {
-					Id simboloTemp = ts.get(posId);
+					Id simboloTemp = ts.get(posId.peek());
 					if (simboloTemp.getCategoria() == ECategoria.METODO) {
 						IdMetodo simbolo = (IdMetodo) simboloTemp;
 						if (simbolo.getTipoRetorno() == ETipo.NULO) {
 							throw new SemanticError("Esperava-se método com retorno");
+						} else {
+							pilhaMetodo.adicionarFuncao(simbolo);
 						}
 					} else {
 						throw new SemanticError("Id deveria ser um método");
@@ -418,7 +426,8 @@ public class Semantico implements Constants {
 					break;
 				}
 				case 170:
-					pilhaMetodo.finalizarFuncao();
+					tipoVar = pilhaMetodo.finalizarFuncao();
+					posId.pop();
 					break;
 				case 171:
 					if (tipoExpressao != ETipo.INTEIRO) {
@@ -426,7 +435,7 @@ public class Semantico implements Constants {
 					} else if (tipoVarIndexada == ETipo.CADEIA) {
 						tipoVar = ETipo.CARACTERE;
 					} else {
-						tipoVar = ts.get(posId).getTipo();
+						tipoVar = ts.get(posId.pop()).getTipo();
 					}
 					break;
 				case 172: {
@@ -451,6 +460,7 @@ public class Semantico implements Constants {
 					} else {
 						throw new SemanticError("Esperava-se variável, constante ou método");
 					}
+					posId.pop();
 					break;
 				}
 				case 173: {

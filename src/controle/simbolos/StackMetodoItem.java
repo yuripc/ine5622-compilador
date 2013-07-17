@@ -24,9 +24,10 @@ public class StackMetodoItem {
 		}
 	}
 
-	public void finalizar() throws SemanticError {
+	public ETipo finalizar() throws SemanticError {
 		if (npa < metodo.getNumParametros()) {
 			throw new SemanticError("Número de parametros passados é menor que o declarado");
 		}
+		return metodo.getTipoRetorno();
 	}
 }

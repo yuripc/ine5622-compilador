@@ -20,8 +20,8 @@ public class StackMetodo {
 		}
 	}
 
-	public void finalizarFuncao() throws SemanticError {
-		pilha.pop().finalizar();
+	public ETipo finalizarFuncao() throws SemanticError {
+		return pilha.pop().finalizar();
 	}
 
 	public void adicionarParametro(ETipo tipo) throws SemanticError {

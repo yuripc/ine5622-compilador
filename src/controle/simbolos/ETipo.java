@@ -6,7 +6,7 @@ public enum ETipo {
 	INTEIRO(true, true, true),
 	REAL(true, false, true),
 	CARACTERE(true, true, true),
-	BOOLEANO(true, false, false),
+	BOOLEANO(true, true, false),
 	NULO(true, false, false);
 
 	private final boolean preDefinido;
