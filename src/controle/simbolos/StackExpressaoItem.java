@@ -14,7 +14,7 @@ public class StackExpressaoItem {
 		if (tipoExpressao != null) {
 			return tipoExpressao;
 		} else {
-			return tipoExpressao;
+			return tipoOperandos;
 		}
 	}
 

@@ -2,11 +2,11 @@ package controle.simbolos;
 
 import controle.analisador.SemanticError;
 
-public class StackFuncaoItem {
+public class StackMetodoItem {
 	protected IdMetodo metodo;
 	protected int npa;
 
-	public StackFuncaoItem(IdMetodo metodo) {
+	public StackMetodoItem(IdMetodo metodo) {
 		this.metodo = metodo;
 	}
 

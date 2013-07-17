@@ -6,13 +6,17 @@ package controle.simbolos;
  */
 
 public class IdVarVetor extends IdVar {
-	// TODO
-	protected int tamanho;
-	protected ETipo subTipo;
+	protected final int tamanho;
+	protected final ETipo subTipo;
 
-	public IdVarVetor(String nome, int nivel, int deslocamento, int tamanho) {
-		// TODO
+	public IdVarVetor(String nome, int nivel, int deslocamento, int tamanho, ETipo subTipo) {
 		super(nome, nivel, deslocamento, ETipo.VETOR);
 		this.tamanho = tamanho;
+		this.subTipo = subTipo;
 	}
+
+	public ETipo getSubTipo() {
+		return subTipo;
+	}
+
 }

@@ -28,9 +28,8 @@ public class StackExpressao {
 		return pilha.peek().getTipo();
 	}
 
-	public ETipo adicionar(ETipo tipo) throws SemanticError {
+	public void adicionar(ETipo tipo) throws SemanticError {
 		pilha.peek().adicionar(tipo);
-		return tipo;
 	}
 
 	public void checarOperacao(Token token) throws Exception {
