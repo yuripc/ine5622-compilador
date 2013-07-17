@@ -10,6 +10,9 @@ public class StackExpressao {
 	protected final Stack<StackExpressaoItem> pilha;
 	protected final TabelaSimbolos ts;
 
+
+	protected boolean ultPopReferencia;
+
 	public StackExpressao(TabelaSimbolos ts) {
 		pilha = new Stack<StackExpressaoItem>();
 		this.ts = ts;
@@ -20,16 +23,12 @@ public class StackExpressao {
 	}
 
 	public ETipo finalizarNivel() throws SemanticError {
+		ultPopReferencia = pilha.peek().isReferecia();
 		return pilha.pop().getTipo();
 	}
 
-	public ETipo adicionar(Token token) throws SemanticError {
-		pilha.peek().adicionar(ts.get(token).getTipo());
-		return pilha.peek().getTipo();
-	}
-
-	public void adicionar(ETipo tipo) throws SemanticError {
-		pilha.peek().adicionar(tipo);
+	public void adicionar(EMpp mpp, ETipo tipo) throws SemanticError {
+		pilha.peek().adicionar(mpp, tipo);
 	}
 
 	public void checarOperacao(Token token) throws Exception {
@@ -38,5 +37,9 @@ public class StackExpressao {
 
 	public ETipo getTipo(){
 		return pilha.peek().getTipo();
+	}
+
+	public boolean isUltPopReferencia(){
+		return ultPopReferencia;
 	}
 }

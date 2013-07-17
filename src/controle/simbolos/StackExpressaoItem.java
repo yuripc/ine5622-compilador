@@ -6,6 +6,7 @@ public class StackExpressaoItem {
 
 	protected ETipo tipoOperandos;
 	protected ETipo tipoExpressao;
+	protected boolean referencia;
 
 	public StackExpressaoItem() {
 	}
@@ -18,9 +19,14 @@ public class StackExpressaoItem {
 		}
 	}
 
-	public void adicionar(ETipo tipoSimbolo) throws SemanticError {
+	public boolean isReferecia(){
+		return referencia;
+	}
+
+	public void adicionar(EMpp mpp, ETipo tipoSimbolo) throws SemanticError {
 		if (tipoOperandos == null) {
 			tipoOperandos = tipoSimbolo;
+			referencia = true;
 		} else if (tipoOperandos == tipoSimbolo) {
 			return;
 		} else if ((tipoSimbolo == ETipo.REAL || tipoSimbolo == ETipo.INTEIRO) && (tipoOperandos == ETipo.REAL || tipoOperandos == ETipo.INTEIRO)) {
@@ -28,9 +34,14 @@ public class StackExpressaoItem {
 		} else {
 			throw new SemanticError("Tipo do item diferente do da expressão");
 		}
+
+		if(mpp == EMpp.VALOR) {
+			referencia = false;
+		}
 	}
 
 	public void checarOperacao(String lexeme) throws Exception {
+		referencia = false;
 		if (lexeme.equals("+") || lexeme.equals("-") || lexeme.equals("*")) {
 			if (tipoOperandos == ETipo.INTEIRO || tipoOperandos == ETipo.REAL) {
 				return;
@@ -57,6 +68,7 @@ public class StackExpressaoItem {
 			throw new SemanticError("Erro ao identificar lexeme '" + lexeme + "'");
 		}
 		throw new SemanticError("Operador invalido para expressão");
-
 	}
+
+
 }

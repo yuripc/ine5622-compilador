@@ -24,7 +24,7 @@ public class StackMetodo {
 		return pilha.pop().finalizar();
 	}
 
-	public void adicionarParametro(ETipo tipo) throws SemanticError {
-		pilha.peek().adicionar(tipo);
+	public void adicionarParametro(EMpp mpp, ETipo tipo) throws SemanticError {
+		pilha.peek().adicionar(mpp, tipo);
 	}
 }

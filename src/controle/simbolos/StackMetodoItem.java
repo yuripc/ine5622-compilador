@@ -10,14 +10,22 @@ public class StackMetodoItem {
 		this.metodo = metodo;
 	}
 
-	public void adicionar(ETipo tipo) throws SemanticError {
-		ETipo tipoParametro = null;
+	public void adicionar(EMpp mppArgumento, ETipo tipoArgumento) throws SemanticError {
+		IdParametro parametro = null;
 		try {
-			tipoParametro = metodo.getTipoParametro(npa);
+			parametro = metodo.getParametro(npa);
 		} catch (IndexOutOfBoundsException e) {
 			throw new SemanticError("Número de parametros passados é maior que o declarado");
 		}
-		if (tipoParametro == tipo || (tipoParametro == ETipo.REAL && tipo == ETipo.INTEIRO) || (tipoParametro == ETipo.CADEIA && tipo == ETipo.CARACTERE)) {
+
+		ETipo tipoParametro = parametro.getTipo();
+		EMpp mppParametro = parametro.getMpp();
+
+		if(mppParametro != mppArgumento){
+			throw new SemanticError("Tipo de argumento inválido");
+		}
+
+		if (tipoParametro == tipoArgumento || (tipoParametro == ETipo.REAL && tipoArgumento == ETipo.INTEIRO) || (tipoParametro == ETipo.CADEIA && tipoArgumento == ETipo.CARACTERE)) {
 			npa++;
 		} else {
 			throw new SemanticError("Tipo incompatível com o parametro");

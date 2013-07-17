@@ -313,10 +313,11 @@ public class Semantico implements Constants {
 				}
 				case 136:
 					contextoEXPR = EContextoEXP.PARATUAL;
-					pilhaMetodo.adicionarParametro(tipoExpressao);
+					pilhaMetodo.adicionarParametro(mpp, tipoExpressao);
 					break;
 				case 137:
 					pilhaMetodo.finalizarFuncao();
+					mpp = EMpp.VALOR;
 					posId.pop();
 					break;
 				case 138: {
@@ -339,7 +340,7 @@ public class Semantico implements Constants {
 							throw new SemanticError("Tipo inválido para impressão");
 						}
 					} else if (contextoEXPR == EContextoEXP.PARATUAL) {
-						pilhaMetodo.adicionarParametro(tipoExpressao);
+						pilhaMetodo.adicionarParametro(mpp, tipoExpressao);
 					}
 					break;
 
@@ -359,14 +360,14 @@ public class Semantico implements Constants {
 					// 150 não usado - inserido em <termo>
 					// 151 a 153 não usados
 				case 154:
-					pilhaExpressao.adicionar(tipoFator);
+					pilhaExpressao.adicionar(mpp, tipoFator);
 					tipoFator = null;
 					break;
 				case 155:
 					pilhaExpressao.checarOperacao(token);
 					break;
 				case 156:
-					pilhaExpressao.adicionar(tipoFator);
+					pilhaExpressao.adicionar(mpp, tipoFator);
 					break;
 					// 157 a 160 não existem
 				case 161:
@@ -380,6 +381,7 @@ public class Semantico implements Constants {
 					if (tipoFator != ETipo.BOOLEANO) {
 						throw new SemanticError("Não exige operando booleano");
 					}
+					mpp = EMpp.VALOR;
 					break;
 				case 163:
 					if (opUnario) {
@@ -392,6 +394,7 @@ public class Semantico implements Constants {
 					if (tipoFator != ETipo.INTEIRO || tipoFator != ETipo.REAL) {
 						throw new SemanticError("Não exige operando numérico");
 					}
+					mpp = EMpp.VALOR;
 					break;
 				case 165:
 					opNega = opUnario = false;
@@ -410,6 +413,7 @@ public class Semantico implements Constants {
 					tipoFator = tipoConst;
 					tipoConst = null;
 					opNega = opUnario = false;
+					mpp = EMpp.VALOR;
 					break;
 				case 169: {
 					Id simboloTemp = ts.get(posId.peek());
@@ -428,6 +432,7 @@ public class Semantico implements Constants {
 				case 170:
 					tipoVar = pilhaMetodo.finalizarFuncao();
 					posId.pop();
+					mpp = EMpp.VALOR;
 					break;
 				case 171:
 					if (tipoExpressao != ETipo.INTEIRO) {
@@ -437,6 +442,7 @@ public class Semantico implements Constants {
 					} else {
 						tipoVar = ts.get(posId.pop()).getTipo();
 					}
+					mpp = EMpp.REFERENCIA;
 					break;
 				case 172: {
 					Id simbolo = ts.get(token);
@@ -461,6 +467,7 @@ public class Semantico implements Constants {
 						throw new SemanticError("Esperava-se variável, constante ou método");
 					}
 					posId.pop();
+					mpp = EMpp.REFERENCIA;
 					break;
 				}
 				case 173: {
@@ -518,6 +525,7 @@ public class Semantico implements Constants {
 					break;
 				case 202:
 					tipoExpressao = pilhaExpressao.finalizarNivel();
+					mpp = (pilhaExpressao.isUltPopReferencia()) ? EMpp.REFERENCIA : EMpp.VALOR;
 					break;
 				}
 			} catch (Exception e) {
