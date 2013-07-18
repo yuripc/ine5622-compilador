@@ -1,0 +1,18 @@
+programa exemplo;
+ 
+# constantes 
+
+# variáveis  
+inteiro b;
+
+# métodos 
+
+metodo metodo2 : inteiro ;
+{
+  retorne b;
+};
+
+/* MAIN */ 
+{ 
+ b := metodo2;
+}.
