@@ -21,7 +21,7 @@ public class StackMetodoItem {
 		ETipo tipoParametro = parametro.getTipo();
 		EMpp mppParametro = parametro.getMpp();
 
-		if(mppParametro != mppArgumento){
+		if(mppParametro == EMpp.REFERENCIA && mppArgumento == EMpp.VALOR){
 			throw new SemanticError("Tipo de argumento inválido");
 		}
 
