@@ -1,0 +1,15 @@
+programa exemplo;
+ 
+# constantes 
+
+# variáveis  
+inteiro numeros;
+
+
+# métodos 
+
+
+/* MAIN */ 
+{ 
+ numeros[1] := 1
+}.
