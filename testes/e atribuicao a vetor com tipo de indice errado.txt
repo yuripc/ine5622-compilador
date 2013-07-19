@@ -3,12 +3,12 @@ programa exemplo;
 # constantes 
 inteiro m = 1;
 
-# variáveis  
+# variaveis  
 inteiro i,j,k;
 inteiro [5] a;
 caracter c = 'c';
 
-# métodos 
+# metodos 
 
 
 /* MAIN */ 

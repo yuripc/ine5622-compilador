@@ -2,11 +2,11 @@ programa exemplo;
  
 # constantes 
 
-# variáveis  
+# variaveis  
 inteiro [256] numeros;
 
 
-# métodos 
+# metodos 
 
 
 /* MAIN */ 

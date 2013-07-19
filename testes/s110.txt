@@ -3,10 +3,10 @@ programa exemplo;
 # constantes 
 inteiro [256] numeros;
 
-# variáveis  
+# variaveis  
 
 
-# métodos 
+# metodos 
 
 
 /* MAIN */ 

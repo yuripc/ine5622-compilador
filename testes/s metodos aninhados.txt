@@ -6,13 +6,12 @@ programa exemplo;
 inteiro b;
 
 # metodos 
-
-metodo metodo2 : inteiro ;
+metodo metodo1 ( val  a : inteiro ) : inteiro;
 {
-  retorne b;
+ retorne a;
 };
 
 /* MAIN */ 
 { 
- b := metodo2;
+    b := metodo1(metodo1(b));
 }.

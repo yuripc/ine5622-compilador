@@ -2,10 +2,10 @@ programa exemplo;
  
 # constantes 
 
-# variáveis  
+# variaveis  
 inteiro a, b;
 
-# métodos 
+# metodos 
 metodo teste (ref i, j :inteiro);
 {
   teste(i,j);

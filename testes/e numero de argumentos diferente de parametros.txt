@@ -3,10 +3,10 @@ programa exemplo;
 # constantes 
 booleano bol = falso;
 
-# variáveis  
+# variaveis  
 inteiro a, b;
 
-# métodos 
+# metodos 
 metodo teste (ref i, j :inteiro);
 {
 

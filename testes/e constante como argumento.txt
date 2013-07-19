@@ -2,11 +2,11 @@ programa exemplo;
  
 # constantes 
 
-# variáveis  
+# variaveis  
 inteiro a, b;
 booleano bol;
 
-# métodos 
+# metodos 
 metodo teste (ref i, j :inteiro);
 {
 

@@ -2,13 +2,13 @@ programa exemplo;
  
 # constantes 
 
-# variáveis  
+# variaveis  
 inteiro a, b;
 caracter c;
 
 booleano bol;
 
-# métodos 
+# metodos 
 
 /* MAIN */ 
 { 

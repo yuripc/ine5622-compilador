@@ -2,10 +2,10 @@ programa exemplo;
  
 # constantes 
 
-# variáveis  
+# variaveis  
 
 
-# métodos 
+# metodos 
 metodo teste (ref i :inteiro) : booleano;
 {
   retorne i;

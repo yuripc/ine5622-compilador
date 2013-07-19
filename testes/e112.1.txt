@@ -4,10 +4,10 @@ programa exemplo;
 inteiro quant = 1;
 inteiro quant = 1;
 
-# variáveis  
+# variaveis  
 
 
-# métodos 
+# metodos 
 
 
 /* MAIN */ 

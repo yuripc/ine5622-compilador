@@ -4,10 +4,10 @@ programa exemplo;
 inteiro numero = 15;
 real numero2 = 14.1;
 
-# variáveis  
+# variaveis  
 
 
-# métodos 
+# metodos 
 
 
 /* MAIN */ 

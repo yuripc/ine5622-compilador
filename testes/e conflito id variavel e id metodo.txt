@@ -3,10 +3,10 @@ programa exemplo;
 # constantes 
 inteiro teste = 1;
 
-# variáveis  
+# variaveis  
 
 
-# métodos 
+# metodos 
 metodo teste (ref i :inteiro) : inteiro;
 {
   retorne 1;

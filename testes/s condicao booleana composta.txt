@@ -2,12 +2,12 @@ programa exemplo;
  
 # constantes 
 
-# variáveis  
+# variaveis  
 inteiro a, b;
 real r;
 booleano bol;
 
-# métodos 
+# metodos 
 
 /* MAIN */ 
 { 

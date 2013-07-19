@@ -3,10 +3,10 @@ programa exemplo;
 # constantes 
 cadeia[10] nomes = "a";
 
-# variáveis  
+# variaveis  
 
 
-# métodos 
+# metodos 
 
 
 /* MAIN */ 

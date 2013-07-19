@@ -2,10 +2,10 @@ programa exemplo;
  
 # constantes 
 
-# variáveis  
+# variaveis  
 inteiro b;
 
-# métodos 
+# metodos 
 
 metodo metodo2 ;
 {
